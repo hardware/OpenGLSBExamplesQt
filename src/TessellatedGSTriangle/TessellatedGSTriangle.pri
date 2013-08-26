@@ -1,17 +1,5 @@
 QT += opengl
 
-RCC_DIR     = $$PWD/build/tmp/rcc
-UI_DIR      = $$PWD/build/tmp/ui
-MOC_DIR     = $$PWD/build/tmp/moc
-OBJECTS_DIR = $$PWD/build/tmp/obj
-
-CONFIG(debug, debug|release) {
-    DESTDIR = $$PWD/build/debug
-}
-CONFIG(release, debug|release) {
-    DESTDIR = $$PWD/build/release
-}
-
 HEADERS += \
     $$PWD/objects/tessellatedgstriangle.h \
     $$PWD/objects/abstractscene.h \
