@@ -21,7 +21,6 @@ TriangleDerivingFadeEffect::TriangleDerivingFadeEffect(QObject *parent)
 TriangleDerivingFadeEffect::~TriangleDerivingFadeEffect()
 {
     m_vao->destroy();
-    m_shaderProgram.release();
 }
 
 void TriangleDerivingFadeEffect::initialize()
@@ -44,7 +43,7 @@ void TriangleDerivingFadeEffect::initialize()
         m_logger->enableMessages();
 
     // Charge, compile et link le Vertex et Fragment Shader
-    prepareShaderProgram();
+    prepareShaders();
 
     // Création du Vertex Array Object
     m_vao->create();
@@ -63,8 +62,7 @@ void TriangleDerivingFadeEffect::render(double currentTime)
                               0.0f, 1.0f };
 
     m_funcs->glClearBufferfv(GL_COLOR, 0, color);
-
-    m_shaderProgram.bind();
+    m_shader->shader()->bind();
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
@@ -74,21 +72,14 @@ void TriangleDerivingFadeEffect::resize(int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void TriangleDerivingFadeEffect::prepareShaderProgram()
+void TriangleDerivingFadeEffect::prepareShaders()
 {
-    // Charge et compile le Vertex Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/resources/shaders/basic.vert") )
-        qCritical() << "Could not compile vertex shader. Log : " << m_shaderProgram.log();
+    m_shader = ShadersPtr(new Shaders);
 
-    // Charge et compile le Fragment Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/resources/shaders/basic.frag") )
-        qCritical() << "Could not compile fragment shader. Log : " << m_shaderProgram.log();
+    m_shader->setVertexShader(":/resources/shaders/basic.vert");
+    m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-    // Permet de linker les shaders
-    if( ! m_shaderProgram.link() )
-        qCritical() << "Could not link shader program. Log : " << m_shaderProgram.log();
-
-    m_shaderProgram.removeAllShaders();
+    m_shader->shader()->link();
 }
 
 void TriangleDerivingFadeEffect::onMessageLogged(QOpenGLDebugMessage message)
