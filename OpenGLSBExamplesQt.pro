@@ -3,7 +3,9 @@
 # include( src/MovingTriangle/MovingTriangle.pri )
 # include( src/MovingColoredTriangle/MovingColoredTriangle.pri )
 # include( src/TessellatedTriangle/TessellatedTriangle.pri )
-include( src/TessellatedGSTriangle/TessellatedGSTriangle.pri )
+# include( src/TessellatedGSTriangle/TessellatedGSTriangle.pri )
+# include( src/TriangleDerivingFragColor/TriangleDerivingFragColor.pri )
+include( src/TriangleDerivingFadeEffect/TriangleDerivingFadeEffect.pri )
 
 QT += core gui widgets
 

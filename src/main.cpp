@@ -1,4 +1,4 @@
-#include "TessellatedGSTriangle/ui/window.h"
+#include "TriangleDerivingFadeEffect/ui/window.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
