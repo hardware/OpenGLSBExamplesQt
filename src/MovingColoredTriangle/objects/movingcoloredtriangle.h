@@ -32,8 +32,8 @@ private:
     QOpenGLVertexArrayObject  * m_vao;
     QOpenGLFunctions_4_3_Core * m_funcs;
     QOpenGLDebugLogger        * m_logger;
-	
-	ShadersPtr m_shader;
+
+    ShadersPtr m_shader;
 };
 
 #endif // MOVINGCOLOREDTRIANGLE_H

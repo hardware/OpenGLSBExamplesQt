@@ -79,11 +79,11 @@ void MovingTriangle::resize(int width, int height)
 void MovingTriangle::prepareShaders()
 {
     m_shader = ShadersPtr(new Shaders);
-	
-	m_shader->setVertexShader(":/resources/shaders/basic.vert");
+
+    m_shader->setVertexShader(":/resources/shaders/basic.vert");
     m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-	m_shader->shader()->link();
+    m_shader->shader()->link();
 }
 
 void MovingTriangle::onMessageLogged(QOpenGLDebugMessage message)

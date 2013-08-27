@@ -78,15 +78,15 @@ void TessellatedGSTriangle::resize(int width, int height)
 
 void TessellatedGSTriangle::prepareShaders()
 {
-	m_shader = ShadersPtr(new Shaders);
-	
-	m_shader->setVertexShader(":/resources/shaders/basic.vert");
+    m_shader = ShadersPtr(new Shaders);
+
+    m_shader->setVertexShader(":/resources/shaders/basic.vert");
     m_shader->setTessellationControlShader(":/resources/shaders/basic.tcs");
     m_shader->setTessellationEvaluationShader(":/resources/shaders/basic.tes");
     m_shader->setGeometryShader(":/resources/shaders/basic.geom");
-	m_shader->setFragmentShader(":/resources/shaders/basic.frag");
+    m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-	m_shader->shader()->link();
+    m_shader->shader()->link();
 }
 
 void TessellatedGSTriangle::onMessageLogged(QOpenGLDebugMessage message)

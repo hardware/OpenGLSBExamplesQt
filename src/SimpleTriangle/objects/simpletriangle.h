@@ -1,4 +1,4 @@
-﻿#ifndef SIMPLETRIANGLE_H
+#ifndef SIMPLETRIANGLE_H
 #define SIMPLETRIANGLE_H
 
 #include "abstractscene.h"
@@ -27,13 +27,13 @@ public slots:
     void onMessageLogged(QOpenGLDebugMessage message);
 
 private:
-	void prepareShaders();
+    void prepareShaders();
 
     QOpenGLVertexArrayObject  * m_vao;
     QOpenGLFunctions_3_2_Core * m_funcs;
     QOpenGLDebugLogger        * m_logger;
-	
-	ShadersPtr m_shader;
+
+    ShadersPtr m_shader;
 };
 
 #endif // SIMPLETRIANGLE_H

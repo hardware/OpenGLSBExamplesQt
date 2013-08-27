@@ -1,4 +1,4 @@
-﻿#include "simpletriangle.h"
+#include "simpletriangle.h"
 
 #include <math.h>
 #include <QObject>
@@ -76,11 +76,11 @@ void SimpleTriangle::resize(int width, int height)
 void SimpleTriangle::prepareShaders()
 {
     m_shader = ShadersPtr(new Shaders);
-	
-	m_shader->setVertexShader(":/resources/shaders/basic.vert");
+
+    m_shader->setVertexShader(":/resources/shaders/basic.vert");
     m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-	m_shader->shader()->link();
+    m_shader->shader()->link();
 }
 
 void SimpleTriangle::onMessageLogged(QOpenGLDebugMessage message)
