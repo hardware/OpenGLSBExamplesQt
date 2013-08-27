@@ -1,3 +1,5 @@
+include( src/common/common.pri );
+
 # include( src/SimplePoint/SimplePoint.pri )
 # include( src/SimpleTriangle/SimpleTriangle.pri )
 # include( src/MovingTriangle/MovingTriangle.pri )

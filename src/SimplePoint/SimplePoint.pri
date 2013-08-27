@@ -2,12 +2,10 @@ QT += opengl
 
 HEADERS += \
     $$PWD/objects/simplepoint.h \
-    $$PWD/objects/abstractscene.h \
     $$PWD/ui/window.h
 
 SOURCES += \
     $$PWD/objects/simplepoint.cpp \
-    $$PWD/objects/abstractscene.cpp \
     $$PWD/ui/window.cpp
 
 RESOURCES += \
