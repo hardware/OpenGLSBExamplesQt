@@ -1,4 +1,4 @@
-#include "TriangleDerivingFadeEffect/ui/window.h"
+#include "SimpleTriangleMultipleVBO/ui/window.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
