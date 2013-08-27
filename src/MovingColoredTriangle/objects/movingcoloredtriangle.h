@@ -2,8 +2,8 @@
 #define MOVINGCOLOREDTRIANGLE_H
 
 #include "abstractscene.h"
+#include "shaders.h"
 
-#include <QOpenGLShaderProgram>
 #include <QOpenGLDebugMessage>
 
 class QOpenGLVertexArrayObject;
@@ -27,12 +27,13 @@ public slots:
     void onMessageLogged(QOpenGLDebugMessage message);
 
 private:
-    void prepareShaderProgram();
+    void prepareShaders();
 
-    QOpenGLShaderProgram        m_shaderProgram;
     QOpenGLVertexArrayObject  * m_vao;
     QOpenGLFunctions_4_3_Core * m_funcs;
     QOpenGLDebugLogger        * m_logger;
+	
+	ShadersPtr m_shader;
 };
 
 #endif // MOVINGCOLOREDTRIANGLE_H

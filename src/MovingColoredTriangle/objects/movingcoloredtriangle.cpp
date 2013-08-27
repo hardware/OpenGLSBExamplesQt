@@ -21,7 +21,6 @@ MovingColoredTriangle::MovingColoredTriangle(QObject *parent)
 MovingColoredTriangle::~MovingColoredTriangle()
 {
     m_vao->destroy();
-    m_shaderProgram.release();
 }
 
 void MovingColoredTriangle::initialize()
@@ -44,7 +43,7 @@ void MovingColoredTriangle::initialize()
         m_logger->enableMessages();
 
     // Charge, compile et link le Vertex et Fragment Shader
-    prepareShaderProgram();
+    prepareShaders();
 
     // Création du Vertex Array Object
     m_vao->create();
@@ -64,16 +63,16 @@ void MovingColoredTriangle::render(double currentTime)
 
     m_funcs->glClearBufferfv(GL_COLOR, 0, color);
 
-    m_shaderProgram.bind();
+    m_shader->shader()->bind();
 
     // offset attribut
-    m_shaderProgram.setAttributeValue(1, QVector4D((float)sin(currentTime) * 0.5f,
-                                                   (float)cos(currentTime) * 0.6f,
-                                                   0.0f, 0.0f));
+    m_shader->shader()->setAttributeValue(1, QVector4D((float)sin(currentTime) * 0.5f,
+                                                       (float)cos(currentTime) * 0.6f,
+                                                       0.0f, 0.0f));
     // color attribut
-    m_shaderProgram.setAttributeValue(2, QVector4D((float)cos(currentTime) * 0.8f + 0.8f,
-                                                   (float)sin(currentTime) * 0.8f + 0.8f,
-                                                   0.0f, 1.0f));
+    m_shader->shader()->setAttributeValue(2, QVector4D((float)cos(currentTime) * 0.8f + 0.8f,
+                                                       (float)sin(currentTime) * 0.8f + 0.8f,
+                                                       0.0f, 1.0f));
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
@@ -83,21 +82,14 @@ void MovingColoredTriangle::resize(int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void MovingColoredTriangle::prepareShaderProgram()
+void MovingColoredTriangle::prepareShaders()
 {
-    // Charge et compile le Vertex Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/resources/shaders/basic.vert") )
-        qCritical() << "Could not compile vertex shader. Log : " << m_shaderProgram.log();
+    m_shader = ShadersPtr(new Shaders);
+	
+	m_shader->setVertexShader(":/resources/shaders/basic.vert");
+    m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-    // Charge et compile le Fragment Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/resources/shaders/basic.frag") )
-        qCritical() << "Could not compile fragment shader. Log : " << m_shaderProgram.log();
-
-    // Permet de linker les shaders
-    if( ! m_shaderProgram.link() )
-        qCritical() << "Could not link shader program. Log : " << m_shaderProgram.log();
-
-    m_shaderProgram.removeAllShaders();
+	m_shader->shader()->link();
 }
 
 void MovingColoredTriangle::onMessageLogged(QOpenGLDebugMessage message)

@@ -21,7 +21,6 @@ TessellatedTriangle::TessellatedTriangle(QObject *parent)
 TessellatedTriangle::~TessellatedTriangle()
 {
     m_vao->destroy();
-    m_shaderProgram.release();
 }
 
 void TessellatedTriangle::initialize()
@@ -44,7 +43,7 @@ void TessellatedTriangle::initialize()
         m_logger->enableMessages();
 
     // Charge, compile et link le Vertex et Fragment Shader
-    prepareShaderProgram();
+    prepareShaders();
 
     // Création du Vertex Array Object
     m_vao->create();
@@ -66,7 +65,7 @@ void TessellatedTriangle::render(double currentTime)
     // Efface le tampon d'affichage
     glClear(GL_COLOR_BUFFER_BIT);
 
-    m_shaderProgram.bind();
+    m_shader->shader()->bind();
 
     glDrawArrays(GL_PATCHES, 0, 3);
 }
@@ -76,29 +75,16 @@ void TessellatedTriangle::resize(int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void TessellatedTriangle::prepareShaderProgram()
+void TessellatedTriangle::prepareShaders()
 {
-    // Charge et compile le Vertex Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/resources/shaders/basic.vert") )
-        qCritical() << "Could not compile vertex shader. Log : " << m_shaderProgram.log();
+    m_shader = ShadersPtr(new Shaders);
+	
+	m_shader->setVertexShader(":/resources/shaders/basic.vert");
+    m_shader->setTessellationControlShader(":/resources/shaders/basic.tcs");
+    m_shader->setTessellationEvaluationShader(":/resources/shaders/basic.tes");
+	m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-    // Charge et compile le Tessellation Control Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::TessellationControl, ":/resources/shaders/basic.tcs") )
-        qCritical() << "Could not compile tessellation control shader. Log : " << m_shaderProgram.log();
-
-    // Charge et compile le Tessellation Evaluation Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, ":/resources/shaders/basic.tes") )
-        qCritical() << "Could not compile tessellation evaluation shader. Log : " << m_shaderProgram.log();
-
-    // Charge et compile le Fragment Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/resources/shaders/basic.frag") )
-        qCritical() << "Could not compile fragment shader. Log : " << m_shaderProgram.log();
-
-    // Permet de linker les shaders
-    if( ! m_shaderProgram.link() )
-        qCritical() << "Could not link shader program. Log : " << m_shaderProgram.log();
-
-    m_shaderProgram.removeAllShaders();
+	m_shader->shader()->link();
 }
 
 void TessellatedTriangle::onMessageLogged(QOpenGLDebugMessage message)

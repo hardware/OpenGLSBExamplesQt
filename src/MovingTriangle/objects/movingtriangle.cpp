@@ -21,7 +21,6 @@ MovingTriangle::MovingTriangle(QObject *parent)
 MovingTriangle::~MovingTriangle()
 {
     m_vao->destroy();
-    m_shaderProgram.release();
 }
 
 void MovingTriangle::initialize()
@@ -44,7 +43,7 @@ void MovingTriangle::initialize()
         m_logger->enableMessages();
 
     // Charge, compile et link le Vertex et Fragment Shader
-    prepareShaderProgram();
+    prepareShaders();
 
     // Création du Vertex Array Object
     m_vao->create();
@@ -64,10 +63,10 @@ void MovingTriangle::render(double currentTime)
 
     m_funcs->glClearBufferfv(GL_COLOR, 0, color);
 
-    m_shaderProgram.bind();
-    m_shaderProgram.setAttributeValue(1, QVector4D((float)sin(currentTime) * 0.5f,
-                                                   (float)cos(currentTime) * 0.6f,
-                                                   0.0f, 0.0f));
+    m_shader->shader()->bind();
+    m_shader->shader()->setAttributeValue(1, QVector4D((float)sin(currentTime) * 0.5f,
+                                                       (float)cos(currentTime) * 0.6f,
+                                                       0.0f, 0.0f));
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
@@ -77,21 +76,14 @@ void MovingTriangle::resize(int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void MovingTriangle::prepareShaderProgram()
+void MovingTriangle::prepareShaders()
 {
-    // Charge et compile le Vertex Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/resources/shaders/basic.vert") )
-        qCritical() << "Could not compile vertex shader. Log : " << m_shaderProgram.log();
+    m_shader = ShadersPtr(new Shaders);
+	
+	m_shader->setVertexShader(":/resources/shaders/basic.vert");
+    m_shader->setFragmentShader(":/resources/shaders/basic.frag");
 
-    // Charge et compile le Fragment Shader
-    if( ! m_shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/resources/shaders/basic.frag") )
-        qCritical() << "Could not compile fragment shader. Log : " << m_shaderProgram.log();
-
-    // Permet de linker les shaders
-    if( ! m_shaderProgram.link() )
-        qCritical() << "Could not link shader program. Log : " << m_shaderProgram.log();
-
-    m_shaderProgram.removeAllShaders();
+	m_shader->shader()->link();
 }
 
 void MovingTriangle::onMessageLogged(QOpenGLDebugMessage message)

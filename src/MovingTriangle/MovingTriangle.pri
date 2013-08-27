@@ -1,5 +1,7 @@
 QT += opengl
 
+INCLUDEPATH += $$_PRO_FILE_PWD_/src/common
+
 HEADERS += \
     $$PWD/objects/movingtriangle.h \
     $$PWD/ui/window.h
