@@ -1,4 +1,4 @@
-#include "SimpleTriangleMultipleVBO/ui/window.h"
+#include "SpinningCubeDUB/ui/window.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
