@@ -3,6 +3,7 @@
 
 #include "abstractscene.h"
 #include "shaders.h"
+#include "object3d.h"
 
 #include <QOpenGLBuffer>
 #include <QOpenGLDebugMessage>
@@ -41,6 +42,7 @@ private:
     QMatrix4x4                  m_projection;
 
     ShadersPtr m_shader;
+    Object3D   spinningCube;
 
 public:
     struct {

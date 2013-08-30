@@ -72,19 +72,22 @@ void ObjectViewer::render(double currentTime)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    QMatrix4x4 model, view, mvp;
+    QMatrix4x4 view, mvp;
 
-    view.lookAt(QVector3D(2.0f, 0.6f, 0.0f),  // Position vector
+    view.lookAt(QVector3D(0.0f, 0.6f, 2.0f),  // Position vector
                 QVector3D(0.0f, 0.0f, 0.0f),  // LookAt vector
                 QVector3D(0.0f, 1.0f, 0.0f)); // Direction vector
 
-    model.translate(m_position.x, m_position.y, m_position.z);
-    model.rotate(currentTime/0.02f, 0.0f, 1.0f, 0.0f);
-    model.rotate(m_rotation.x, 1.0f, 0.0f, 0.0f);
-    model.rotate(m_rotation.y, 0.0f, 1.0f, 0.0f);
-    model.rotate(m_rotation.z, 0.0f, 0.0f, 1.0f);
+    spinningCube.setPosition(m_position.x, m_position.y, m_position.z);
+    spinningCube.setRotation(m_rotation.x, m_rotation.y, m_rotation.z);
 
-    mvp = m_projection * view * model;
+    if(currentTime > 0)
+    {
+        spinningCube.rotateY(currentTime/0.02f);
+        spinningCube.translate(QVector3D(0.0f, sinf(currentTime) * 0.8, 0.0f));
+    }
+
+    mvp = m_projection * view * spinningCube.getModelMatrix();
 
     m_shader->shader()->bind();
     m_shader->shader()->setUniformValue("mvp", mvp);
