@@ -49,21 +49,6 @@ void Object3D::setScale(float scaleFactor)
     m_scale.setZ(scaleFactor);
 }
 
-const QVector3D& Object3D::getPosition() const
-{
-    return m_position;
-}
-
-const QVector3D& Object3D::getRotation() const
-{
-    return m_rotation;
-}
-
-const QVector3D& Object3D::getScale() const
-{
-    return m_scale;
-}
-
 void Object3D::translate(const QVector3D &translationVector)
 {
     m_position.setX(m_position.x() + translationVector.x());
@@ -156,6 +141,21 @@ void Object3D::scaleY(float y)
 void Object3D::scaleZ(float z)
 {
     m_scale.setZ(m_scale.z() + z);
+}
+
+const QVector3D& Object3D::getPosition() const
+{
+    return m_position;
+}
+
+const QVector3D& Object3D::getRotation() const
+{
+    return m_rotation;
+}
+
+const QVector3D& Object3D::getScale() const
+{
+    return m_scale;
 }
 
 const QMatrix4x4& Object3D::getModelMatrix()

@@ -50,9 +50,6 @@ private:
     QVector3D m_rotation;
     QVector3D m_scale;
 
-    QMatrix4x4 m_translationMatrix;
-    QMatrix4x4 m_rotationMatrix;
-    QMatrix4x4 m_scaleMatrix;
     QMatrix4x4 m_modelMatrix;
 
     bool update;
