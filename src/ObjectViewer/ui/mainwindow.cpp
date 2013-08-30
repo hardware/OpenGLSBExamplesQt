@@ -130,6 +130,6 @@ void MainWindow::keyPressEvent(QKeyEvent* e)
         break;
 
     default:
-        QMainWindow::keyPressEvent( e );
+        QMainWindow::keyPressEvent(e);
     }
 }

@@ -3,8 +3,6 @@
 #define _USE_MATH_DEFINES  1 // Include constants defined in math.h
 #include <math.h>
 
-#include <QObject>
-#include <QOpenGLContext>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLFunctions_3_2_Core>
 #include <QOpenGLDebugLogger>
@@ -168,6 +166,7 @@ void ObjectViewer::prepareVertexBuffer()
     m_vertexPositionBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
     m_vertexPositionBuffer.bind();
     m_vertexPositionBuffer.allocate(m_positionVertices.constData(), m_positionVertices.size() * sizeof(QVector3D));
+    m_vertexPositionBuffer.release();
 
     m_shader->shader()->bind();
 

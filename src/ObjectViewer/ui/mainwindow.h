@@ -6,7 +6,6 @@
 class Window;
 class QWidget;
 class QDockWidget;
-class QLCDNumber;
 
 class MainWindow : public QMainWindow
 {
