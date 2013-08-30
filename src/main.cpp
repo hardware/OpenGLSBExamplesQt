@@ -1,12 +1,12 @@
-#include "SpinningCubeDUB/ui/window.h"
+#include "ObjectViewer/ui/mainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Window w;
-    w.show();
+    MainWindow window;
+    window.show();
 
     return a.exec();
 }
