@@ -5,8 +5,10 @@
 #include <QQuaternion>
 #include <QMatrix4x4>
 
-class Object3D
+class Object3D : public QObject
 {
+
+    Q_OBJECT
 
 public:
     Object3D();
@@ -45,15 +47,21 @@ public:
     const QVector3D&  getScale() const;
     const QMatrix4x4& getModelMatrix();
 
+public slots:
+    void setObjectXPosition(int x);
+    void setObjectYPosition(int y);
+    void setObjectZPosition(int z);
+
+    void setObjectXRotation(int x);
+    void setObjectYRotation(int y);
+    void setObjectZRotation(int z);
+
 private:
     QVector3D m_position;
     QVector3D m_rotation;
     QVector3D m_scale;
 
     QMatrix4x4 m_modelMatrix;
-
-    bool update;
-
 };
 
 #endif // OBJECT3D_H

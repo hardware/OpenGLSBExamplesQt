@@ -27,6 +27,8 @@ public:
 
     void wireframe(bool state);
 
+    Object3D* getObject();
+
 public slots:
     void onMessageLogged(QOpenGLDebugMessage message);
 

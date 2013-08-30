@@ -78,8 +78,8 @@ void ObjectViewer::render(double currentTime)
                 QVector3D(0.0f, 0.0f, 0.0f),  // LookAt vector
                 QVector3D(0.0f, 1.0f, 0.0f)); // Direction vector
 
-    spinningCube.setPosition(m_position.x, m_position.y, m_position.z);
-    spinningCube.setRotation(m_rotation.x, m_rotation.y, m_rotation.z);
+    //spinningCube.setPosition(m_position.x, m_position.y, m_position.z);
+    //spinningCube.setRotation(m_rotation.x, m_rotation.y, m_rotation.z);
 
     if(currentTime > 0)
     {
@@ -195,4 +195,9 @@ void ObjectViewer::wireframe(bool state)
         glEnable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+}
+
+Object3D* ObjectViewer::getObject()
+{
+    return &spinningCube;
 }

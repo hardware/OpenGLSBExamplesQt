@@ -6,6 +6,7 @@
 
 class AbstractScene;
 class QOpenGLContext;
+class ObjectViewer;
 
 /**
  * @class Window
@@ -21,6 +22,8 @@ class Window : public QWindow
 public:
     Window(QScreen *screen = 0);
 
+    ObjectViewer* getScene();
+
 private:
     void initializeGL();
 
@@ -28,13 +31,6 @@ public slots:
     void checkAnimate(int state);
     void checkWireframe(int state);
 
-    void setObjectXPosition(int x);
-    void setObjectYPosition(int y);
-    void setObjectZPosition(int z);
-
-    void setObjectXRotation(int x);
-    void setObjectYRotation(int y);
-    void setObjectZRotation(int z);
 protected slots:
     void resizeGL();
     void paintGL();

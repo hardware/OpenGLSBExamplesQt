@@ -123,45 +123,9 @@ void Window::checkWireframe(int state)
       scene->wireframe(false);
 }
 
-void Window::setObjectXPosition(int x)
+ObjectViewer* Window::getScene()
 {
     ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
 
-    scene->m_position.x = (float)x/100;
+    return scene;
 }
-
-void Window::setObjectYPosition(int y)
-{
-    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
-
-    scene->m_position.y = (float)y/100;
-}
-
-void Window::setObjectZPosition(int z)
-{
-    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
-
-    scene->m_position.z = (float)-z/100;
-}
-
-void Window::setObjectXRotation(int x)
-{
-    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
-
-    scene->m_rotation.x = (float)x;
-}
-
-void Window::setObjectYRotation(int y)
-{
-    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
-
-    scene->m_rotation.y = (float)y;
-}
-
-void Window::setObjectZRotation(int z)
-{
-    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
-
-    scene->m_rotation.z = (float)z;
-}
-
