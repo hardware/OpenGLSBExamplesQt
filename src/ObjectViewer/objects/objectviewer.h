@@ -43,7 +43,7 @@ private:
     QMatrix4x4                  m_projection;
 
     ShadersPtr m_shader;
-    Object3D   spinningCube;
+    Object3D   m_spinningCube;
 };
 
 #endif // OBJECTVIEWER_H

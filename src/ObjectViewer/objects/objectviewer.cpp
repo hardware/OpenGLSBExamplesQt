@@ -76,10 +76,10 @@ void ObjectViewer::render(double currentTime)
 
     if(currentTime > 0)
     {
-        spinningCube.rotateY(currentTime/0.02f);
+        m_spinningCube.rotateY(currentTime/0.02f);
     }
 
-    mvp = m_projection * view * spinningCube.getModelMatrix();
+    mvp = m_projection * view * m_spinningCube.getModelMatrix();
 
     m_shader->shader()->bind();
     m_shader->shader()->setUniformValue("mvp", mvp);
@@ -191,5 +191,5 @@ void ObjectViewer::checkWireframe(int state)
 
 Object3D* ObjectViewer::getObject()
 {
-    return &spinningCube;
+    return &m_spinningCube;
 }
