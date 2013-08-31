@@ -109,20 +109,6 @@ void Window::checkAnimate(int state)
         m_timer.invalidate();
 }
 
-/**
- * @brief Vérification de l'activation du mode wireframe
- */
-void Window::checkWireframe(int state)
-{
-    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
-
-    if(state == Qt::Checked)
-      scene->wireframe(true);
-
-    if(state == Qt::Unchecked)
-      scene->wireframe(false);
-}
-
 ObjectViewer* Window::getScene()
 {
     ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);

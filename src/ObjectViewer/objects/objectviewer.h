@@ -25,12 +25,11 @@ public:
     virtual void render(double currentTime);
     virtual void resize(int width, int height);
 
-    void wireframe(bool state);
-
     Object3D* getObject();
 
 public slots:
     void onMessageLogged(QOpenGLDebugMessage message);
+    void checkWireframe(int state);
 
 private:
     void prepareShaders();
@@ -45,19 +44,6 @@ private:
 
     ShadersPtr m_shader;
     Object3D   spinningCube;
-
-public:
-    struct {
-        float x;
-        float y;
-        float z;
-    } m_position;
-
-    struct {
-        float x;
-        float y;
-        float z;
-    } m_rotation;
 };
 
 #endif // OBJECTVIEWER_H

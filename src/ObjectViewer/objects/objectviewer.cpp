@@ -17,11 +17,7 @@ ObjectViewer::ObjectViewer(QObject *parent)
       m_vao(new QOpenGLVertexArrayObject(this)),
       m_logger(new QOpenGLDebugLogger(this)),
       m_vertexPositionBuffer(QOpenGLBuffer::VertexBuffer)
-{
-    m_position.x = 0.0f;
-    m_position.y = 0.0f;
-    m_position.z = 0.0f;
-}
+{}
 
 ObjectViewer::~ObjectViewer()
 {
@@ -78,13 +74,9 @@ void ObjectViewer::render(double currentTime)
                 QVector3D(0.0f, 0.0f, 0.0f),  // LookAt vector
                 QVector3D(0.0f, 1.0f, 0.0f)); // Direction vector
 
-    //spinningCube.setPosition(m_position.x, m_position.y, m_position.z);
-    //spinningCube.setRotation(m_rotation.x, m_rotation.y, m_rotation.z);
-
     if(currentTime > 0)
     {
         spinningCube.rotateY(currentTime/0.02f);
-        spinningCube.translate(QVector3D(0.0f, sinf(currentTime) * 0.8, 0.0f));
     }
 
     mvp = m_projection * view * spinningCube.getModelMatrix();
@@ -183,9 +175,9 @@ void ObjectViewer::onMessageLogged(QOpenGLDebugMessage message)
     qDebug() << message;
 }
 
-void ObjectViewer::wireframe(bool state)
+void ObjectViewer::checkWireframe(int state)
 {
-    if(state)
+    if(state == Qt::Checked)
     {
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

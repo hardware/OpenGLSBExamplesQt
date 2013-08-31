@@ -29,7 +29,6 @@ private:
 
 public slots:
     void checkAnimate(int state);
-    void checkWireframe(int state);
 
 protected slots:
     void resizeGL();

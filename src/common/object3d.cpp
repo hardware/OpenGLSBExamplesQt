@@ -123,9 +123,9 @@ void Object3D::scale(float x, float y, float z)
 
 void Object3D::scale(float scaleFactor)
 {
-    m_scale.setX(m_scale.x() * scaleFactor);
-    m_scale.setY(m_scale.y() * scaleFactor);
-    m_scale.setZ(m_scale.z() * scaleFactor);
+    m_scale.setX(m_scale.x() + scaleFactor);
+    m_scale.setY(m_scale.y() + scaleFactor);
+    m_scale.setZ(m_scale.z() + scaleFactor);
 }
 
 void Object3D::scaleX(float x)
