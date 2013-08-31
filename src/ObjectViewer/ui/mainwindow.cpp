@@ -7,14 +7,11 @@
 #include <QCoreApplication>
 #include <QKeyEvent>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent),
+      m_openglArea(new Window)
 {
-    m_openglArea = new Window;
-    setCentralWidget(QWidget::createWindowContainer(m_openglArea));
-
-    m_scene.reset(m_openglArea->getScene());
-    m_object3D.reset(m_scene->getObject());
-
+    setCentralWidget(QWidget::createWindowContainer(m_openglArea.data()));
     initializeParamsArea();
     resize(1024, 600);
 }
@@ -115,16 +112,19 @@ void MainWindow::initializeParamsArea()
 
     m_params->setLayout(dockLayout);
 
-    QObject::connect(animate, SIGNAL(stateChanged(int)), m_openglArea, SLOT(checkAnimate(int)));
-    QObject::connect(wireframe, SIGNAL(stateChanged(int)), m_scene.data(), SLOT(checkWireframe(int)));
+    ObjectViewer* scene = m_openglArea->getScene();
+    Object3D* object3D = scene->getObject();
 
-    QObject::connect(translationX, SIGNAL(valueChanged(int)), m_object3D.data(), SLOT(setObjectXPosition(int)));
-    QObject::connect(translationY, SIGNAL(valueChanged(int)), m_object3D.data(), SLOT(setObjectYPosition(int)));
-    QObject::connect(translationZ, SIGNAL(valueChanged(int)), m_object3D.data(), SLOT(setObjectZPosition(int)));
+    QObject::connect(animate, SIGNAL(stateChanged(int)), m_openglArea.data(), SLOT(checkAnimate(int)));
+    QObject::connect(wireframe, SIGNAL(stateChanged(int)), scene, SLOT(checkWireframe(int)));
 
-    QObject::connect(rotationX, SIGNAL(valueChanged(int)), m_object3D.data(), SLOT(setObjectXRotation(int)));
-    QObject::connect(rotationY, SIGNAL(valueChanged(int)), m_object3D.data(), SLOT(setObjectYRotation(int)));
-    QObject::connect(rotationZ, SIGNAL(valueChanged(int)), m_object3D.data(), SLOT(setObjectZRotation(int)));
+    QObject::connect(translationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXPosition(int)));
+    QObject::connect(translationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYPosition(int)));
+    QObject::connect(translationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZPosition(int)));
+
+    QObject::connect(rotationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXRotation(int)));
+    QObject::connect(rotationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYRotation(int)));
+    QObject::connect(rotationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZRotation(int)));
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* e)

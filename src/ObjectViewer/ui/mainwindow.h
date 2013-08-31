@@ -20,11 +20,12 @@ public:
     void initializeParamsArea();
 
 private:
-    Window       * m_openglArea;
     QWidget      * m_params;
     QDockWidget  * m_dockArea;
-    QScopedPointer<ObjectViewer> m_scene;
-    QScopedPointer<Object3D>     m_object3D;
+    ObjectViewer * m_scene;
+    Object3D     * m_object3D;
+
+    QScopedPointer<Window> m_openglArea;
 
 protected:
     void keyPressEvent(QKeyEvent* e);

@@ -72,7 +72,7 @@ void ObjectViewer::render(double currentTime)
 
     view.lookAt(QVector3D(0.0f, 0.6f, 2.0f),  // Position vector
                 QVector3D(0.0f, 0.0f, 0.0f),  // LookAt vector
-                QVector3D(0.0f, 1.0f, 0.0f)); // Direction vector
+                QVector3D(0.0f, 1.0f, 0.0f)); // Up vector
 
     if(currentTime > 0)
     {
