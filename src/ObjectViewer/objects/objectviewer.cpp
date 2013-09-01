@@ -19,7 +19,13 @@ ObjectViewer::ObjectViewer(QObject *parent)
       m_vao(new QOpenGLVertexArrayObject(this)),
       m_logger(new QOpenGLDebugLogger(this)),
       m_vertexPositionBuffer(QOpenGLBuffer::VertexBuffer),
-      m_panAngle(0.0f)
+      m_panAngle(0.0f),
+      m_tiltAngle(0.0f),
+      m_v(),
+      m_viewCenterFixed(false),
+      m_metersToUnits(0.05f),
+      m_time(0.0f)
+
 {
     // Initialisation de la position et de l'orientation de la camera
     m_camera->setPosition(QVector3D(0.0f, 0.6f, 2.0f));
@@ -69,7 +75,18 @@ void ObjectViewer::initialize()
 
 void ObjectViewer::update(float t)
 {
-    Q_UNUSED(t);
+    //Q_UNUSED(t);
+
+    // Store the time
+    const float dt = t - m_time;
+    m_time = t;
+
+    // Update the camera position and orientation
+    Camera::CameraTranslationOption option = m_viewCenterFixed
+                                           ? Camera::DontTranslateViewCenter
+                                           : Camera::TranslateViewCenter;
+
+    m_camera->translate(m_v * dt * m_metersToUnits, option);
 
     if( ! qFuzzyIsNull(m_panAngle) )
     {
@@ -90,7 +107,7 @@ void ObjectViewer::render(double currentTime)
 
     if(currentTime > 0)
     {
-        m_spinningCube.rotateY(currentTime/0.02f);
+        //m_spinningCube.rotateY(currentTime/0.02f);
     }
 
     QMatrix4x4 mvp = m_camera->viewProjectionMatrix() *

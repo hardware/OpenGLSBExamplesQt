@@ -26,6 +26,12 @@ public:
     virtual void render(double currentTime);
     virtual void resize(int width, int height);
 
+    // Contrôle du mouvement de la camera
+    void setSideSpeed(float vx) { m_v.setX(vx); }
+    void setVerticalSpeed(float vy) { m_v.setY(vy); }
+    void setForwardSpeed(float vz) { m_v.setZ(vz); }
+    void setViewCenterFixed(bool b) { m_viewCenterFixed = b; }
+
     // Contrôle de l'orientation de la camera
     void pan(float angle) { m_panAngle = angle; }
     void tilt(float angle) { m_tiltAngle = angle; }
@@ -51,8 +57,15 @@ private:
     ShadersPtr m_shader;
     Object3D   m_spinningCube;
 
+    QVector3D m_v;
+
+    bool m_viewCenterFixed;
+
     float m_panAngle;
     float m_tiltAngle;
+    float m_time;
+
+    const float m_metersToUnits;
 };
 
 #endif // OBJECTVIEWER_H

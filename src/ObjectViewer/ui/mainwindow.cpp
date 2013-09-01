@@ -9,11 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       m_openglArea(new Window)
 {
-    //QWidget *container = ;
-    //container->setFocusPolicy(Qt::NoFocus);
-
-    //setFocusPolicy(Qt::ClickFocus);
-
     setCentralWidget(QWidget::createWindowContainer(m_openglArea.data()));
     initializeParamsArea();
     resize(1024, 600);

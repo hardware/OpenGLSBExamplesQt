@@ -48,7 +48,8 @@ Window::Window(QScreen *screen)
     // On définit le contexte OpenGL de la scène
     m_scene->setContext(m_context);
 
-    m_timer.invalidate();
+    //m_timer.invalidate();
+    m_timer.start();
 
     initializeGL();
 
@@ -96,7 +97,7 @@ void Window::resizeGL()
  */
 void Window::updateScene()
 {
-    m_scene->update(0.0f);
+    m_scene->update(static_cast<float>(m_timer.elapsed())/1000.0f);
     paintGL();
 }
 
@@ -121,6 +122,10 @@ ObjectViewer* Window::getScene()
 
 void Window::keyPressEvent(QKeyEvent* e)
 {
+    const float speed = 44.7f; // in m/s. Equivalent to 100 miles/hour
+
+    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
+
     switch (e->key())
     {
     case Qt::Key_Escape:
@@ -128,8 +133,66 @@ void Window::keyPressEvent(QKeyEvent* e)
         QCoreApplication::instance()->quit();
         break;
 
+    case Qt::Key_D:
+        scene->setSideSpeed(speed);
+        break;
+
+    case Qt::Key_Q:
+        scene->setSideSpeed(-speed);
+        break;
+
+    case Qt::Key_Z:
+        scene->setForwardSpeed(speed);
+        break;
+
+    case Qt::Key_S:
+        scene->setForwardSpeed(-speed);
+        break;
+
+    case Qt::Key_PageUp:
+        scene->setVerticalSpeed(speed);
+        break;
+
+    case Qt::Key_PageDown:
+        scene->setVerticalSpeed(-speed);
+        break;
+
+    case Qt::Key_Shift:
+        scene->setViewCenterFixed(true);
+        break;
+
     default:
         QWindow::keyPressEvent(e);
+    }
+}
+
+void Window::keyReleaseEvent(QKeyEvent* e)
+{
+    ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
+
+    switch (e->key())
+    {
+        case Qt::Key_D:
+        case Qt::Key_Q:
+            scene->setSideSpeed(0.0f);
+            break;
+
+        case Qt::Key_Z:
+        case Qt::Key_S:
+            scene->setForwardSpeed(0.0f);
+            break;
+
+        case Qt::Key_PageUp:
+        case Qt::Key_PageDown:
+            scene->setVerticalSpeed(0.0f);
+            break;
+
+        case Qt::Key_Shift:
+            scene->setViewCenterFixed(false);
+            break;
+
+        default:
+            QWindow::keyReleaseEvent( e );
     }
 }
 
