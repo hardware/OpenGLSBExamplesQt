@@ -114,6 +114,8 @@ public slots:
     void rotate(const QQuaternion& q);
     void rotateAboutViewCenter(const QQuaternion& q);
 
+    void resetCamera();
+
 protected:
     Q_DECLARE_PRIVATE( Camera )
 

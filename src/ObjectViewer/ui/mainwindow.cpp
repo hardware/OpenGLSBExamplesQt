@@ -2,6 +2,7 @@
 #include "window.h"
 #include "object3d.h"
 #include "../objects/objectviewer.h"
+#include "camera.h"
 
 #include <QtWidgets>
 
@@ -9,12 +10,33 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       m_openglArea(new Window)
 {
-    setCentralWidget(QWidget::createWindowContainer(m_openglArea.data()));
-    initializeParamsArea();
     resize(1024, 600);
+    setCentralWidget(QWidget::createWindowContainer(m_openglArea.data()));
+
+    initializeMenuBar();
+    initializeParamsArea();
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::initializeMenuBar()
+{
+    QAction *exitAction = new QAction("&Exit", this);
+    exitAction->setShortcut(QKeySequence("Ctrl+Q"));
+
+    QAction *fullscreenAction = new QAction("&Fullscreen", this);
+    fullscreenAction->setCheckable(true);
+    fullscreenAction->setShortcut(QKeySequence(Qt::Key_F11));
+
+    QMenu *fileMenu = menuBar()->addMenu("&File");
+    fileMenu->addAction(exitAction);
+
+    QMenu *windowMenu = menuBar()->addMenu("&Window");
+    windowMenu->addAction(fullscreenAction);
+
+    QObject::connect(exitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    QObject::connect(fullscreenAction, SIGNAL(triggered(bool)), this, SLOT(setFullScreen(bool)));
+}
 
 void MainWindow::initializeParamsArea()
 {
@@ -34,6 +56,15 @@ void MainWindow::initializeParamsArea()
 
     QGroupBox* optionsGroupBox = new QGroupBox("OPTIONS");
     optionsGroupBox->setLayout(optionsLayout);
+
+    // CAMERA GROUPBOX
+    QPushButton* resetCamera = new QPushButton("Reset camera");
+
+    QHBoxLayout* cameraLayout = new QHBoxLayout;
+    cameraLayout->addWidget(resetCamera);
+
+    QGroupBox* cameraGroupBox = new QGroupBox("CAMERA");
+    cameraGroupBox->setLayout(cameraLayout);
 
     // TRANSLATION GROUPBOX
     QSlider* translationX = new QSlider(Qt::Horizontal);
@@ -104,6 +135,7 @@ void MainWindow::initializeParamsArea()
 
     QVBoxLayout* dockLayout = new QVBoxLayout;
     dockLayout->addWidget(optionsGroupBox);
+    dockLayout->addWidget(cameraGroupBox);
     dockLayout->addWidget(translationGroupBox);
     dockLayout->addWidget(rotationGroupBox);
     dockLayout->addStretch();
@@ -112,9 +144,12 @@ void MainWindow::initializeParamsArea()
 
     ObjectViewer* scene = m_openglArea->getScene();
     Object3D* object3D = scene->getObject();
+    Camera* camera = scene->getCamera();
 
     QObject::connect(animate, SIGNAL(stateChanged(int)), m_openglArea.data(), SLOT(checkAnimate(int)));
     QObject::connect(wireframe, SIGNAL(stateChanged(int)), scene, SLOT(checkWireframe(int)));
+
+    QObject::connect(resetCamera, SIGNAL(clicked()), camera, SLOT(resetCamera()));
 
     QObject::connect(translationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXPosition(int)));
     QObject::connect(translationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYPosition(int)));
@@ -123,4 +158,9 @@ void MainWindow::initializeParamsArea()
     QObject::connect(rotationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXRotation(int)));
     QObject::connect(rotationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYRotation(int)));
     QObject::connect(rotationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZRotation(int)));
+}
+
+void MainWindow::setFullScreen(bool state)
+{
+    (state) ? showFullScreen() : showNormal();
 }

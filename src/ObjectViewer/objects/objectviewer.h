@@ -37,6 +37,7 @@ public:
     void tilt(float angle) { m_tiltAngle = angle; }
 
     Object3D* getObject();
+    Camera*   getCamera();
 
 public slots:
     void onMessageLogged(QOpenGLDebugMessage message);

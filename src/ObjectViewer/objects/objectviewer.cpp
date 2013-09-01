@@ -224,3 +224,8 @@ Object3D* ObjectViewer::getObject()
 {
     return &m_spinningCube;
 }
+
+Camera* ObjectViewer::getCamera()
+{
+    return m_camera;
+}

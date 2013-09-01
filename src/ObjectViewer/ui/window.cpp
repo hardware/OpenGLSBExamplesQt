@@ -133,19 +133,19 @@ void Window::keyPressEvent(QKeyEvent* e)
         QCoreApplication::instance()->quit();
         break;
 
-    case Qt::Key_D:
+    case Qt::Key_Right:
         scene->setSideSpeed(speed);
         break;
 
-    case Qt::Key_Q:
+    case Qt::Key_Left:
         scene->setSideSpeed(-speed);
         break;
 
-    case Qt::Key_Z:
+    case Qt::Key_Up:
         scene->setForwardSpeed(speed);
         break;
 
-    case Qt::Key_S:
+    case Qt::Key_Down:
         scene->setForwardSpeed(-speed);
         break;
 
@@ -172,13 +172,13 @@ void Window::keyReleaseEvent(QKeyEvent* e)
 
     switch (e->key())
     {
-        case Qt::Key_D:
-        case Qt::Key_Q:
+        case Qt::Key_Right:
+        case Qt::Key_Left:
             scene->setSideSpeed(0.0f);
             break;
 
-        case Qt::Key_Z:
-        case Qt::Key_S:
+        case Qt::Key_Up:
+        case Qt::Key_Down:
             scene->setForwardSpeed(0.0f);
             break;
 
@@ -192,7 +192,7 @@ void Window::keyReleaseEvent(QKeyEvent* e)
             break;
 
         default:
-            QWindow::keyReleaseEvent( e );
+            QWindow::keyReleaseEvent(e);
     }
 }
 

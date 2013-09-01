@@ -17,7 +17,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void initializeMenuBar();
     void initializeParamsArea();
+
+private slots:
+    void setFullScreen(bool state);
 
 private:
     QWidget      * m_params;
