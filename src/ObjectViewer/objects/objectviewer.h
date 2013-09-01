@@ -8,6 +8,7 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLDebugMessage>
 
+class Camera;
 class QOpenGLVertexArrayObject;
 class QOpenGLFunctions_3_2_Core;
 class QOpenGLDebugLogger;
@@ -25,6 +26,10 @@ public:
     virtual void render(double currentTime);
     virtual void resize(int width, int height);
 
+    // Contrôle de l'orientation de la camera
+    void pan(float angle) { m_panAngle = angle; }
+    void tilt(float angle) { m_tiltAngle = angle; }
+
     Object3D* getObject();
 
 public slots:
@@ -35,6 +40,7 @@ private:
     void prepareShaders();
     void prepareVertexBuffer();
 
+    Camera                    * m_camera;
     QOpenGLVertexArrayObject  * m_vao;
     QOpenGLFunctions_3_2_Core * m_funcs;
     QOpenGLDebugLogger        * m_logger;
@@ -44,6 +50,9 @@ private:
 
     ShadersPtr m_shader;
     Object3D   m_spinningCube;
+
+    float m_panAngle;
+    float m_tiltAngle;
 };
 
 #endif // OBJECTVIEWER_H

@@ -4,13 +4,16 @@
 #include "../objects/objectviewer.h"
 
 #include <QtWidgets>
-#include <QCoreApplication>
-#include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       m_openglArea(new Window)
 {
+    //QWidget *container = ;
+    //container->setFocusPolicy(Qt::NoFocus);
+
+    //setFocusPolicy(Qt::ClickFocus);
+
     setCentralWidget(QWidget::createWindowContainer(m_openglArea.data()));
     initializeParamsArea();
     resize(1024, 600);
@@ -125,18 +128,4 @@ void MainWindow::initializeParamsArea()
     QObject::connect(rotationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXRotation(int)));
     QObject::connect(rotationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYRotation(int)));
     QObject::connect(rotationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZRotation(int)));
-}
-
-void MainWindow::keyPressEvent(QKeyEvent* e)
-{
-    switch (e->key())
-    {
-    case Qt::Key_Escape:
-
-        QCoreApplication::instance()->quit();
-        break;
-
-    default:
-        QMainWindow::keyPressEvent(e);
-    }
 }

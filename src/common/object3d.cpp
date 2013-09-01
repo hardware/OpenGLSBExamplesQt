@@ -143,22 +143,22 @@ void Object3D::scaleZ(float z)
     m_scale.setZ(m_scale.z() + z);
 }
 
-const QVector3D& Object3D::getPosition() const
+const QVector3D& Object3D::position() const
 {
     return m_position;
 }
 
-const QVector3D& Object3D::getRotation() const
+const QVector3D& Object3D::rotation() const
 {
     return m_rotation;
 }
 
-const QVector3D& Object3D::getScale() const
+const QVector3D& Object3D::scale() const
 {
     return m_scale;
 }
 
-const QMatrix4x4& Object3D::getModelMatrix()
+const QMatrix4x4& Object3D::modelMatrix()
 {
     m_modelMatrix.setToIdentity();
 

@@ -24,6 +24,12 @@ public:
 
     ObjectViewer* getScene();
 
+protected:
+    void keyPressEvent(QKeyEvent* e);
+    void mousePressEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
+
 private:
     void initializeGL();
 
@@ -39,6 +45,11 @@ private:
     QElapsedTimer     m_timer;
     QOpenGLContext *  m_context;
     AbstractScene  *  m_scene;
+
+    QPoint m_prevPos;
+    QPoint m_pos;
+
+    bool m_leftButtonPressed;
 };
 
 #endif // WINDOW_H

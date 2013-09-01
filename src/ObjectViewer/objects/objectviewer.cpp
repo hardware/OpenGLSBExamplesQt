@@ -1,4 +1,5 @@
 #include "objectviewer.h"
+#include "camera.h"
 
 #define _USE_MATH_DEFINES  1 // Include constants defined in math.h
 #include <math.h>
@@ -14,10 +15,17 @@
  */
 ObjectViewer::ObjectViewer(QObject *parent)
     : AbstractScene(parent),
+      m_camera(new Camera(this)),
       m_vao(new QOpenGLVertexArrayObject(this)),
       m_logger(new QOpenGLDebugLogger(this)),
-      m_vertexPositionBuffer(QOpenGLBuffer::VertexBuffer)
-{}
+      m_vertexPositionBuffer(QOpenGLBuffer::VertexBuffer),
+      m_panAngle(0.0f)
+{
+    // Initialisation de la position et de l'orientation de la camera
+    m_camera->setPosition(QVector3D(0.0f, 0.6f, 2.0f));
+    m_camera->setViewCenter(QVector3D(0.0f, 0.0f, 0.0f));
+    m_camera->setUpVector(QVector3D(0.0f, 1.0f, 0.0f));
+}
 
 ObjectViewer::~ObjectViewer()
 {
@@ -62,24 +70,33 @@ void ObjectViewer::initialize()
 void ObjectViewer::update(float t)
 {
     Q_UNUSED(t);
+
+    if( ! qFuzzyIsNull(m_panAngle) )
+    {
+        m_camera->pan(m_panAngle, QVector3D(0.0f, 1.0f, 0.0f));
+        m_panAngle = 0.0f;
+    }
+
+    if ( ! qFuzzyIsNull(m_tiltAngle) )
+    {
+        m_camera->tilt(m_tiltAngle);
+        m_tiltAngle = 0.0f;
+    }
 }
 
 void ObjectViewer::render(double currentTime)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    QMatrix4x4 view, mvp;
-
-    view.lookAt(QVector3D(0.0f, 0.6f, 2.0f),  // Position vector
-                QVector3D(0.0f, 0.0f, 0.0f),  // LookAt vector
-                QVector3D(0.0f, 1.0f, 0.0f)); // Up vector
-
     if(currentTime > 0)
     {
         m_spinningCube.rotateY(currentTime/0.02f);
     }
 
-    mvp = m_projection * view * m_spinningCube.getModelMatrix();
+    qDebug() << m_camera->viewProjectionMatrix();
+
+    QMatrix4x4 mvp = m_camera->viewProjectionMatrix() *
+                     m_spinningCube.modelMatrix();
 
     m_shader->shader()->bind();
     m_shader->shader()->setUniformValue("mvp", mvp);
@@ -91,10 +108,9 @@ void ObjectViewer::resize(int width, int height)
 {
     glViewport(0, 0, width, height);
 
-    float aspect = (float)width / (float)height;
+    float aspect = static_cast<float>(width) / static_cast<float>(height);
 
-    m_projection.setToIdentity();
-    m_projection.perspective(75.0f, aspect, 0.1f, 1000.0f);
+    m_camera->setPerspectiveProjection(75.0f, aspect, 0.1f, 1000.0f);
 }
 
 void ObjectViewer::prepareShaders()

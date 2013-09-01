@@ -2,6 +2,8 @@
 
 #include "../objects/objectviewer.h"
 
+#include <QCoreApplication>
+#include <QKeyEvent>
 #include <QOpenGLContext>
 #include <QTimer>
 
@@ -14,7 +16,8 @@
  */
 Window::Window(QScreen *screen)
     : QWindow(screen),
-      m_scene(new ObjectViewer(this))
+      m_scene(new ObjectViewer(this)),
+      m_leftButtonPressed(false)
 {
     // On définit le type de la zone de rendu, dans notre cas il
     // s'agit d'une zone OpenGL
@@ -115,3 +118,59 @@ ObjectViewer* Window::getScene()
 
     return scene;
 }
+
+void Window::keyPressEvent(QKeyEvent* e)
+{
+    switch (e->key())
+    {
+    case Qt::Key_Escape:
+
+        QCoreApplication::instance()->quit();
+        break;
+
+    default:
+        QWindow::keyPressEvent(e);
+    }
+}
+
+void Window::mousePressEvent(QMouseEvent* e)
+{
+    if(e->button() == Qt::LeftButton)
+    {
+        m_leftButtonPressed = true;
+        m_pos = m_prevPos = e->pos();
+    }
+
+    QWindow::mousePressEvent(e);
+}
+
+void Window::mouseReleaseEvent(QMouseEvent* e)
+{
+    if(e->button() == Qt::LeftButton)
+    {
+        m_leftButtonPressed = false;
+    }
+
+    QWindow::mouseReleaseEvent(e);
+}
+
+void Window::mouseMoveEvent(QMouseEvent* e)
+{
+    if(m_leftButtonPressed)
+    {
+        m_pos = e->pos();
+
+        float dx = 0.2f * (m_pos.x() - m_prevPos.x());
+        float dy = -0.2f * (m_pos.y() - m_prevPos.y());
+
+        m_prevPos = m_pos;
+
+        ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
+
+        scene->pan(dx);
+        scene->tilt(dy);
+    }
+
+    QWindow::mouseMoveEvent(e);
+}
+

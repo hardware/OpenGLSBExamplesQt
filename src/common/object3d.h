@@ -7,7 +7,6 @@
 
 class Object3D : public QObject
 {
-
     Q_OBJECT
 
 public:
@@ -42,10 +41,11 @@ public:
     void scaleY(float y);
     void scaleZ(float z);
 
-    const QVector3D&  getPosition() const;
-    const QVector3D&  getRotation() const;
-    const QVector3D&  getScale() const;
-    const QMatrix4x4& getModelMatrix();
+    const QVector3D& position() const;
+    const QVector3D& rotation() const;
+    const QVector3D& scale()    const;
+
+    const QMatrix4x4& modelMatrix();
 
 public slots:
     void setObjectXPosition(int x);

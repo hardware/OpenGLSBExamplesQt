@@ -27,13 +27,6 @@ private:
 
     QScopedPointer<Window> m_openglArea;
 
-protected:
-    void keyPressEvent(QKeyEvent* e);
-
-signals:
-
-public slots:
-
 };
 
 #endif // MAINWINDOW_H
