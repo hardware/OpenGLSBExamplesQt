@@ -428,6 +428,8 @@ void Camera::rotate(const QQuaternion& q)
     d->m_upVector = q.rotatedVector(d->m_upVector);
     d->m_cameraToCenter = q.rotatedVector(d->m_cameraToCenter);
     d->m_viewCenter = d->m_position + d->m_cameraToCenter;
+
+    d->m_viewMatrixDirty = true;
 }
 
 void Camera::rotateAboutViewCenter(const QQuaternion& q)

@@ -93,8 +93,6 @@ void ObjectViewer::render(double currentTime)
         m_spinningCube.rotateY(currentTime/0.02f);
     }
 
-    qDebug() << m_camera->viewProjectionMatrix();
-
     QMatrix4x4 mvp = m_camera->viewProjectionMatrix() *
                      m_spinningCube.modelMatrix();
 
