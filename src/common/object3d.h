@@ -22,21 +22,14 @@ public:
     void setScale(float x, float y, float z);
     void setScale(float scaleFactor);
 
-    void translate(const QVector3D& translationVector);
-    void translate(float x, float y, float z);
     void translateX(float x);
     void translateY(float y);
     void translateZ(float z);
 
-    void rotate(const QVector3D& rotationVector);
-    void rotate(float x, float y, float z);
     void rotateX(float x);
     void rotateY(float y);
     void rotateZ(float z);
 
-    void scale(const QVector3D& scaleVector);
-    void scale(float x, float y, float z);
-    void scale(float scaleFactor);
     void scaleX(float x);
     void scaleY(float y);
     void scaleZ(float z);
@@ -56,12 +49,16 @@ public slots:
     void setObjectYRotation(int y);
     void setObjectZRotation(int z);
 
+    void reset();
+
 private:
     QVector3D m_position;
     QVector3D m_rotation;
     QVector3D m_scale;
 
     QMatrix4x4 m_modelMatrix;
+
+    bool m_modelMatrixDirty;
 };
 
 #endif // OBJECT3D_H

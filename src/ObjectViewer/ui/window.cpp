@@ -48,8 +48,8 @@ Window::Window(QScreen *screen)
     // On définit le contexte OpenGL de la scène
     m_scene->setContext(m_context);
 
-    //m_timer.invalidate();
-    m_timer.start();
+    m_renderTimer.invalidate(); // Timer pour la zone de rendu (animation... etc)
+    m_updateTimer.start(); // Timer pour la mise à jour de la scène (camera... etc)
 
     initializeGL();
 
@@ -79,7 +79,7 @@ void Window::initializeGL()
 void Window::paintGL()
 {
     m_context->makeCurrent(this);
-    m_scene->render(static_cast<double>(m_timer.elapsed())/1000);
+    m_scene->render(static_cast<double>(m_renderTimer.elapsed())/1000);
     m_context->swapBuffers(this);
 }
 
@@ -97,7 +97,7 @@ void Window::resizeGL()
  */
 void Window::updateScene()
 {
-    m_scene->update(static_cast<float>(m_timer.elapsed())/1000.0f);
+    m_scene->update(static_cast<float>(m_updateTimer.elapsed())/1000.0f);
     paintGL();
 }
 
@@ -107,10 +107,10 @@ void Window::updateScene()
 void Window::checkAnimate(int state)
 {
     if(state == Qt::Checked)
-        m_timer.start();
+        m_renderTimer.start();
 
     if(state == Qt::Unchecked)
-        m_timer.invalidate();
+        m_renderTimer.invalidate();
 }
 
 ObjectViewer* Window::getScene()

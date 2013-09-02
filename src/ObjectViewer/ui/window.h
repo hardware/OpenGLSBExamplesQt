@@ -43,7 +43,7 @@ protected slots:
     void updateScene();
 
 private:
-    QElapsedTimer     m_timer;
+    QElapsedTimer     m_renderTimer, m_updateTimer;
     QOpenGLContext *  m_context;
     AbstractScene  *  m_scene;
 

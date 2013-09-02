@@ -75,13 +75,9 @@ void ObjectViewer::initialize()
 
 void ObjectViewer::update(float t)
 {
-    //Q_UNUSED(t);
-
-    // Store the time
     const float dt = t - m_time;
     m_time = t;
 
-    // Update the camera position and orientation
     Camera::CameraTranslationOption option = m_viewCenterFixed
                                            ? Camera::DontTranslateViewCenter
                                            : Camera::TranslateViewCenter;
@@ -107,7 +103,7 @@ void ObjectViewer::render(double currentTime)
 
     if(currentTime > 0)
     {
-        //m_spinningCube.rotateY(currentTime/0.02f);
+        m_spinningCube.rotateY(currentTime/0.02f);
     }
 
     QMatrix4x4 mvp = m_camera->viewProjectionMatrix() *
