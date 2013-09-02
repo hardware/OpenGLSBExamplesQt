@@ -27,21 +27,24 @@ public:
     virtual void resize(int width, int height);
 
     // Contrôle du mouvement de la camera
-    void setSideSpeed(float vx) { m_v.setX(vx); }
-    void setVerticalSpeed(float vy) { m_v.setY(vy); }
-    void setForwardSpeed(float vz) { m_v.setZ(vz); }
-    void setViewCenterFixed(bool b) { m_viewCenterFixed = b; }
+    inline void setSideSpeed(float vx)     { m_v.setX(vx); }
+    inline void setVerticalSpeed(float vy) { m_v.setY(vy); }
+    inline void setForwardSpeed(float vz)  { m_v.setZ(vz); }
+    inline void setViewCenterFixed(bool b) { m_viewCenterFixed = b; }
 
     // Contrôle de l'orientation de la camera
-    void pan(float angle) { m_panAngle = angle; }
-    void tilt(float angle) { m_tiltAngle = angle; }
+    inline void pan(float angle)  { m_panAngle  = angle; }
+    inline void tilt(float angle) { m_tiltAngle = angle; }
 
     Object3D* getObject();
     Camera*   getCamera();
 
 public slots:
     void onMessageLogged(QOpenGLDebugMessage message);
-    void checkWireframe(int state);
+
+    void toggleFill(bool state);
+    void toggleWireframe(bool state);
+    void togglePoints(bool state);
 
 private:
     void prepareShaders();

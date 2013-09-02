@@ -202,17 +202,31 @@ void ObjectViewer::onMessageLogged(QOpenGLDebugMessage message)
     qDebug() << message;
 }
 
-void ObjectViewer::checkWireframe(int state)
+void ObjectViewer::toggleFill(bool state)
 {
-    if(state == Qt::Checked)
+    if(state)
+    {
+        glEnable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+}
+
+void ObjectViewer::toggleWireframe(bool state)
+{
+    if(state)
     {
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
-    else
+}
+
+void ObjectViewer::togglePoints(bool state)
+{
+    if(state)
     {
-        glEnable(GL_CULL_FACE);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        glDisable(GL_CULL_FACE);
+        glPointSize(2.0f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
     }
 }
 

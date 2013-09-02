@@ -24,8 +24,8 @@ private slots:
     void setFullScreen(bool state);
 
 private:
-    QWidget      * m_params;
-    QDockWidget  * m_dockArea;
+    QWidget      * m_params, *m_coordinate;
+    QDockWidget  * m_dockParamsArea, *m_dockCoordinateArea;
     ObjectViewer * m_scene;
     Object3D     * m_object3D;
 

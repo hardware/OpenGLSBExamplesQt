@@ -135,8 +135,6 @@ const QVector3D& Object3D::scale() const
 
 const QMatrix4x4& Object3D::modelMatrix()
 {
-    qDebug() << m_rotation;
-
     if(m_modelMatrixDirty)
     {
         m_modelMatrix.setToIdentity();
