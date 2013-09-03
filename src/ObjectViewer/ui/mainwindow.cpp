@@ -40,6 +40,9 @@ void MainWindow::initializeMenuBar()
 
 void MainWindow::initializeParamsArea()
 {
+    m_dockMatrixArea = new QDockWidget("MODEL VIEW PROJECTION MATRIX", this);
+    addDockWidget(Qt::BottomDockWidgetArea, m_dockMatrixArea);
+
     // ############ DOCK LEFT ############
 
     m_dockCoordinateArea = new QDockWidget("CARTESIAN COORDINATES", this);
@@ -269,7 +272,18 @@ void MainWindow::initializeParamsArea()
 
     QPushButton* resetCamera = new QPushButton("Reset camera");
 
-    QHBoxLayout* cameraLayout = new QHBoxLayout;
+    QRadioButton* firstPerson  = new QRadioButton("First person");
+    QRadioButton* thirdPerson = new QRadioButton("Third person");
+
+    QFrame* hLineCamera = new QFrame;
+    hLineCamera->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+
+    firstPerson->setChecked(true);
+
+    QVBoxLayout* cameraLayout = new QVBoxLayout;
+    cameraLayout->addWidget(firstPerson);
+    cameraLayout->addWidget(thirdPerson);
+    cameraLayout->addWidget(hLineCamera);
     cameraLayout->addWidget(resetCamera);
 
     QGroupBox* cameraGroupBox = new QGroupBox("CAMERA");

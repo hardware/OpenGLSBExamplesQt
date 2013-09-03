@@ -25,7 +25,7 @@ private slots:
 
 private:
     QWidget      * m_params, *m_coordinate;
-    QDockWidget  * m_dockParamsArea, *m_dockCoordinateArea;
+    QDockWidget  * m_dockParamsArea, *m_dockCoordinateArea, *m_dockMatrixArea;
     ObjectViewer * m_scene;
     Object3D     * m_object3D;
 
