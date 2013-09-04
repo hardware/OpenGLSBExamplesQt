@@ -220,7 +220,11 @@ void MainWindow::initializeParamsArea()
     m_params = new QWidget;
     m_dockParamsArea->setWidget(m_params);
 
-    QLCDNumber* fpsCounter = new QLCDNumber(2);
+    fpsCounter = new QLCDNumber(2);
+    fpsCounter->setSegmentStyle(QLCDNumber::Flat);
+    fpsCounter->setFrameStyle(QFrame::Box | QFrame::Sunken);
+    fpsCounter->display(0.0);
+
     QTabWidget* tab = new QTabWidget;
 
     QWidget* objectTab  = new QWidget;
@@ -269,6 +273,59 @@ void MainWindow::initializeParamsArea()
 
     QGroupBox* projectionTypeGroupBox = new QGroupBox("Projection Type");
     projectionTypeGroupBox->setLayout(projectionTypeLayout);
+
+    // ############ OPTION TAB - VIEW GROUPBOX ############
+
+    fovLabel         = new QLabel("Fov :");
+    nearPlaneLabel   = new QLabel("Near plane :");
+    farPlaneLabel    = new QLabel("Far plane :");
+    leftLabel        = new QLabel("Left :");
+    rightLabel       = new QLabel("Right :");
+    bottomLabel      = new QLabel("Bottom :");
+    topLabel         = new QLabel("Top :");
+
+    fovValue         = new QDoubleSpinBox;
+    nearPlaneValue   = new QDoubleSpinBox;
+    farPlaneValue    = new QDoubleSpinBox;
+    leftValue        = new QDoubleSpinBox;
+    rightValue       = new QDoubleSpinBox;
+    bottomValue      = new QDoubleSpinBox;
+    topValue         = new QDoubleSpinBox;
+
+    leftLabel->hide();
+    rightLabel->hide();
+    bottomLabel->hide();
+    topLabel->hide();
+
+    leftValue->hide();
+    rightValue->hide();
+    bottomValue->hide();
+    topValue->hide();
+
+    QGridLayout* viewLayout = new QGridLayout;
+    viewLayout->addWidget(fovLabel, 0, 0);
+    viewLayout->addWidget(fovValue, 0, 1);
+
+    viewLayout->addWidget(nearPlaneLabel, 1, 0);
+    viewLayout->addWidget(nearPlaneValue, 1, 1);
+
+    viewLayout->addWidget(farPlaneLabel, 2, 0);
+    viewLayout->addWidget(farPlaneValue, 2, 1);
+
+    viewLayout->addWidget(leftLabel, 3, 0);
+    viewLayout->addWidget(leftValue, 3, 1);
+
+    viewLayout->addWidget(rightLabel, 4, 0);
+    viewLayout->addWidget(rightValue, 4, 1);
+
+    viewLayout->addWidget(bottomLabel, 5, 0);
+    viewLayout->addWidget(bottomValue, 5, 1);
+
+    viewLayout->addWidget(topLabel, 6, 0);
+    viewLayout->addWidget(topValue, 6, 1);
+
+    QGroupBox* viewGroupBox = new QGroupBox("VIEW");
+    viewGroupBox->setLayout(viewLayout);
 
     // ############ OPTION TAB - CAMERA GROUPBOX ############
 
@@ -386,6 +443,7 @@ void MainWindow::initializeParamsArea()
     QVBoxLayout* optionsTabLayout = new QVBoxLayout;
     optionsTabLayout->addWidget(renderingModeGroupBox);
     optionsTabLayout->addWidget(projectionTypeGroupBox);
+    optionsTabLayout->addWidget(viewGroupBox);
     optionsTabLayout->addWidget(cameraGroupBox);
     optionsTabLayout->addWidget(animate, 0, Qt::AlignHCenter);
     optionsTabLayout->addStretch();
@@ -407,12 +465,18 @@ void MainWindow::initializeParamsArea()
 
     QObject::connect(animate, SIGNAL(stateChanged(int)), m_openglArea.data(), SLOT(checkAnimate(int)));
 
+    // Rendering mode
     QObject::connect(fill,      SIGNAL(toggled(bool)), scene, SLOT(toggleFill(bool)));
     QObject::connect(wireframe, SIGNAL(toggled(bool)), scene, SLOT(toggleWireframe(bool)));
     QObject::connect(points,    SIGNAL(toggled(bool)), scene, SLOT(togglePoints(bool)));
 
+    // Projection type
+    QObject::connect(perspective, SIGNAL(toggled(bool)), this, SLOT(setViewProperties(bool)));
+
+    // Camera
     QObject::connect(resetCamera, SIGNAL(clicked()), camera, SLOT(resetCamera()));
 
+    // Object
     QObject::connect(translationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXPosition(int)));
     QObject::connect(translationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYPosition(int)));
     QObject::connect(translationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZPosition(int)));
@@ -420,9 +484,74 @@ void MainWindow::initializeParamsArea()
     QObject::connect(rotationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXRotation(int)));
     QObject::connect(rotationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYRotation(int)));
     QObject::connect(rotationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZRotation(int)));
+
+    // Update framerate
+    QObject::connect(m_openglArea.data(), SIGNAL(updateFramerate()), this, SLOT(setFramerate()));
+}
+
+void MainWindow::setViewProperties(bool state)
+{
+    if(state)
+    {
+        fovLabel->show();
+        fovValue->show();
+
+        leftLabel->hide();
+        rightLabel->hide();
+        bottomLabel->hide();
+        topLabel->hide();
+
+        leftValue->hide();
+        rightValue->hide();
+        bottomValue->hide();
+        topValue->hide();
+    }
+    else
+    {
+        fovLabel->hide();
+        fovValue->hide();
+
+        leftLabel->show();
+        rightLabel->show();
+        bottomLabel->show();
+        topLabel->show();
+
+        leftValue->show();
+        rightValue->show();
+        bottomValue->show();
+        topValue->show();
+    }
 }
 
 void MainWindow::setFullScreen(bool state)
 {
     (state) ? showFullScreen() : showNormal();
+}
+
+void MainWindow::setFramerate()
+{
+    static double currentTime = 0;
+    static double lastTime    = 0;
+    static double average     = 0;
+
+    static int count = 0;
+
+    lastTime = currentTime;
+
+    QTime time;
+    currentTime = time.currentTime().msec();
+
+    if(currentTime > lastTime)
+    {
+         average += 1000.0 / (currentTime - lastTime);
+         count++;
+    }
+
+    if(count == 15)
+    {
+        fpsCounter->display(average/count);
+
+        count   = 0;
+        average = 0;
+    }
 }
