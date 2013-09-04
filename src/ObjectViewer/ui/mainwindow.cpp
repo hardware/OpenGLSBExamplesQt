@@ -220,6 +220,7 @@ void MainWindow::initializeParamsArea()
     m_params = new QWidget;
     m_dockParamsArea->setWidget(m_params);
 
+    QLCDNumber* fpsCounter = new QLCDNumber(2);
     QTabWidget* tab = new QTabWidget;
 
     QWidget* objectTab  = new QWidget;
@@ -229,6 +230,7 @@ void MainWindow::initializeParamsArea()
     tab->addTab(objectTab, "Object");
 
     QVBoxLayout* paramsLayout = new QVBoxLayout;
+    paramsLayout->addWidget(fpsCounter);
     paramsLayout->addWidget(tab);
     paramsLayout->addStretch();
 
@@ -240,9 +242,9 @@ void MainWindow::initializeParamsArea()
 
     // ############ OPTION TAB - RENDERING MODE GROUPBOX ############
 
-    QRadioButton* fill = new QRadioButton("fill");
+    QRadioButton* fill      = new QRadioButton("fill");
     QRadioButton* wireframe = new QRadioButton("wireframe");
-    QRadioButton* points = new QRadioButton("points");
+    QRadioButton* points    = new QRadioButton("points");
 
     fill->setChecked(true);
 
@@ -272,18 +274,41 @@ void MainWindow::initializeParamsArea()
 
     QPushButton* resetCamera = new QPushButton("Reset camera");
 
-    QRadioButton* firstPerson  = new QRadioButton("First person");
+    QRadioButton* firstPerson = new QRadioButton("First person");
     QRadioButton* thirdPerson = new QRadioButton("Third person");
 
-    QFrame* hLineCamera = new QFrame;
-    hLineCamera->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-
     firstPerson->setChecked(true);
+
+    QFrame* hLineCamera1 = new QFrame;
+    QFrame* hLineCamera2 = new QFrame;
+
+    hLineCamera1->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+    hLineCamera2->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+
+    QLabel* cameraSpeedLabel       = new QLabel("Speed (m/s) : ");
+    QLabel* cameraSensitivityLabel = new QLabel("Sensitivity : ");
+
+    QDoubleSpinBox* cameraSpeedValue       = new QDoubleSpinBox;
+    QDoubleSpinBox* cameraSensitivityValue = new QDoubleSpinBox;
+
+    cameraSpeedValue->setMaximumSize(50, 20);
+    cameraSensitivityValue->setMaximumSize(50, 20);
+
+    QHBoxLayout* cameraSpeedLayout = new QHBoxLayout;
+    cameraSpeedLayout->addWidget(cameraSpeedLabel);
+    cameraSpeedLayout->addWidget(cameraSpeedValue);
+
+    QHBoxLayout* cameraSensitivityLayout = new QHBoxLayout;
+    cameraSensitivityLayout->addWidget(cameraSensitivityLabel);
+    cameraSensitivityLayout->addWidget(cameraSensitivityValue);
 
     QVBoxLayout* cameraLayout = new QVBoxLayout;
     cameraLayout->addWidget(firstPerson);
     cameraLayout->addWidget(thirdPerson);
-    cameraLayout->addWidget(hLineCamera);
+    cameraLayout->addWidget(hLineCamera1);
+    cameraLayout->addLayout(cameraSpeedLayout);
+    cameraLayout->addLayout(cameraSensitivityLayout);
+    cameraLayout->addWidget(hLineCamera2);
     cameraLayout->addWidget(resetCamera);
 
     QGroupBox* cameraGroupBox = new QGroupBox("CAMERA");
