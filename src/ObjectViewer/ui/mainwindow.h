@@ -28,10 +28,13 @@ private slots:
     void setViewProperties(bool state);
     void setFramerate();
     void updateMatrix();
+    void updateFieldOfView(double fov);
+    void updateNearPlane(double nearPlane);
+    void updateFarPlane(double farPlane);
 
 private:
-    QWidget      * m_params,         * m_coordinate, *m_mvpMatrix;
-    QDockWidget  * m_dockParamsArea, * m_dockCoordinateArea, * m_dockMatrixArea;
+    QWidget      * m_params,         * m_coordinate,     * m_mvpMatrix;
+    QDockWidget  * m_dockParamsArea, * m_dockMatrixArea;
     ObjectViewer * m_scene;
     Object3D     * m_object3D;
 

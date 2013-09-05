@@ -123,7 +123,7 @@ void ObjectViewer::resize(int width, int height)
 
     float aspect = static_cast<float>(width) / static_cast<float>(height);
 
-    m_camera->setPerspectiveProjection(75.0f, aspect, 0.1f, 1000.0f);
+    m_camera->setPerspectiveProjection(m_camera->fieldOfView(), aspect, m_camera->nearPlane(), m_camera->farPlane());
 }
 
 void ObjectViewer::prepareShaders()
