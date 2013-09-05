@@ -27,9 +27,10 @@ private slots:
     void setFullScreen(bool state);
     void setViewProperties(bool state);
     void setFramerate();
+    void updateMatrix();
 
 private:
-    QWidget      * m_params,         * m_coordinate;
+    QWidget      * m_params,         * m_coordinate, *m_mvpMatrix;
     QDockWidget  * m_dockParamsArea, * m_dockCoordinateArea, * m_dockMatrixArea;
     ObjectViewer * m_scene;
     Object3D     * m_object3D;
@@ -47,6 +48,21 @@ private:
                    * topValue;
 
     QLCDNumber* fpsCounter;
+
+    QLabel * modelMatrix00, * modelMatrix01, * modelMatrix02, * modelMatrix03,
+           * modelMatrix10, * modelMatrix11, * modelMatrix12, * modelMatrix13,
+           * modelMatrix20, * modelMatrix21, * modelMatrix22, * modelMatrix23,
+           * modelMatrix30, * modelMatrix31, * modelMatrix32, * modelMatrix33;
+
+    QLabel * viewMatrix00, * viewMatrix01, * viewMatrix02, * viewMatrix03,
+           * viewMatrix10, * viewMatrix11, * viewMatrix12, * viewMatrix13,
+           * viewMatrix20, * viewMatrix21, * viewMatrix22, * viewMatrix23,
+           * viewMatrix30, * viewMatrix31, * viewMatrix32, * viewMatrix33;
+
+    QLabel * projectionMatrix00, * projectionMatrix01, * projectionMatrix02, * projectionMatrix03,
+           * projectionMatrix10, * projectionMatrix11, * projectionMatrix12, * projectionMatrix13,
+           * projectionMatrix20, * projectionMatrix21, * projectionMatrix22, * projectionMatrix23,
+           * projectionMatrix30, * projectionMatrix31, * projectionMatrix32, * projectionMatrix33;
 
 };
 

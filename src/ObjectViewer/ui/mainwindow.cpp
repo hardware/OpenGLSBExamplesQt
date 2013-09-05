@@ -40,9 +40,6 @@ void MainWindow::initializeMenuBar()
 
 void MainWindow::initializeParamsArea()
 {
-    m_dockMatrixArea = new QDockWidget("MODEL VIEW PROJECTION MATRIX", this);
-    addDockWidget(Qt::BottomDockWidgetArea, m_dockMatrixArea);
-
     // ############ DOCK LEFT ############
 
     m_dockCoordinateArea = new QDockWidget("CARTESIAN COORDINATES", this);
@@ -457,6 +454,183 @@ void MainWindow::initializeParamsArea()
 
     objectTab->setLayout(objectTabLayout);
 
+    // ############ DOCK LEFT ############
+
+    m_dockMatrixArea = new QDockWidget("MODEL VIEW PROJECTION MATRIX", this);
+    addDockWidget(Qt::BottomDockWidgetArea, m_dockMatrixArea);
+
+    m_mvpMatrix = new QWidget;
+    m_dockMatrixArea->setWidget(m_mvpMatrix);
+
+    modelMatrix00 = new QLabel("0.00");
+    modelMatrix01 = new QLabel("0.00");
+    modelMatrix02 = new QLabel("0.00");
+    modelMatrix03 = new QLabel("0.00");
+
+    modelMatrix10 = new QLabel("0.00");
+    modelMatrix11 = new QLabel("0.00");
+    modelMatrix12 = new QLabel("0.00");
+    modelMatrix13 = new QLabel("0.00");
+
+    modelMatrix20 = new QLabel("0.00");
+    modelMatrix21 = new QLabel("0.00");
+    modelMatrix22 = new QLabel("0.00");
+    modelMatrix23 = new QLabel("0.00");
+
+    modelMatrix30 = new QLabel("0.00");
+    modelMatrix31 = new QLabel("0.00");
+    modelMatrix32 = new QLabel("0.00");
+    modelMatrix33 = new QLabel("0.00");
+
+    viewMatrix00 = new QLabel("0.00");
+    viewMatrix01 = new QLabel("0.00");
+    viewMatrix02 = new QLabel("0.00");
+    viewMatrix03 = new QLabel("0.00");
+
+    viewMatrix10 = new QLabel("0.00");
+    viewMatrix11 = new QLabel("0.00");
+    viewMatrix12 = new QLabel("0.00");
+    viewMatrix13 = new QLabel("0.00");
+
+    viewMatrix20 = new QLabel("0.00");
+    viewMatrix21 = new QLabel("0.00");
+    viewMatrix22 = new QLabel("0.00");
+    viewMatrix23 = new QLabel("0.00");
+
+    viewMatrix30 = new QLabel("0.00");
+    viewMatrix31 = new QLabel("0.00");
+    viewMatrix32 = new QLabel("0.00");
+    viewMatrix33 = new QLabel("0.00");
+
+    projectionMatrix00 = new QLabel("0.00");
+    projectionMatrix01 = new QLabel("0.00");
+    projectionMatrix02 = new QLabel("0.00");
+    projectionMatrix03 = new QLabel("0.00");
+
+    projectionMatrix10 = new QLabel("0.00");
+    projectionMatrix11 = new QLabel("0.00");
+    projectionMatrix12 = new QLabel("0.00");
+    projectionMatrix13 = new QLabel("0.00");
+
+    projectionMatrix20 = new QLabel("0.00");
+    projectionMatrix21 = new QLabel("0.00");
+    projectionMatrix22 = new QLabel("0.00");
+    projectionMatrix23 = new QLabel("0.00");
+
+    projectionMatrix30 = new QLabel("0.00");
+    projectionMatrix31 = new QLabel("0.00");
+    projectionMatrix32 = new QLabel("0.00");
+    projectionMatrix33 = new QLabel("0.00");
+
+    QGridLayout* modelMatrixLayout      = new QGridLayout;
+    QGridLayout* viewMatrixLayout       = new QGridLayout;
+    QGridLayout* projectionMatrixLayout = new QGridLayout;
+
+    modelMatrixLayout->setSpacing(15);
+    viewMatrixLayout->setSpacing(15);
+    projectionMatrixLayout->setSpacing(15);
+
+    modelMatrixLayout->addWidget(modelMatrix00, 0, 0, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix01, 0, 1, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix02, 0, 2, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix03, 0, 3, Qt::AlignHCenter);
+
+    modelMatrixLayout->addWidget(modelMatrix10, 1, 0, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix11, 1, 1, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix12, 1, 2, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix13, 1, 3, Qt::AlignHCenter);
+
+    modelMatrixLayout->addWidget(modelMatrix20, 2, 0, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix21, 2, 1, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix22, 2, 2, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix23, 2, 3, Qt::AlignHCenter);
+
+    modelMatrixLayout->addWidget(modelMatrix30, 3, 0, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix31, 3, 1, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix32, 3, 2, Qt::AlignHCenter);
+    modelMatrixLayout->addWidget(modelMatrix33, 3, 3, Qt::AlignHCenter);
+
+    viewMatrixLayout->addWidget(viewMatrix00, 0, 0, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix01, 0, 1, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix02, 0, 2, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix03, 0, 3, Qt::AlignHCenter);
+
+    viewMatrixLayout->addWidget(viewMatrix10, 1, 0, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix11, 1, 1, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix12, 1, 2, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix13, 1, 3, Qt::AlignHCenter);
+
+    viewMatrixLayout->addWidget(viewMatrix20, 2, 0, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix21, 2, 1, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix22, 2, 2, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix23, 2, 3, Qt::AlignHCenter);
+
+    viewMatrixLayout->addWidget(viewMatrix30, 3, 0, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix31, 3, 1, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix32, 3, 2, Qt::AlignHCenter);
+    viewMatrixLayout->addWidget(viewMatrix33, 3, 3, Qt::AlignHCenter);
+
+    projectionMatrixLayout->addWidget(projectionMatrix00, 0, 0, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix01, 0, 1, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix02, 0, 2, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix03, 0, 3, Qt::AlignHCenter);
+
+    projectionMatrixLayout->addWidget(projectionMatrix10, 1, 0, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix11, 1, 1, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix12, 1, 2, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix13, 1, 3, Qt::AlignHCenter);
+
+    projectionMatrixLayout->addWidget(projectionMatrix20, 2, 0, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix21, 2, 1, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix22, 2, 2, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix23, 2, 3, Qt::AlignHCenter);
+
+    projectionMatrixLayout->addWidget(projectionMatrix30, 3, 0, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix31, 3, 1, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix32, 3, 2, Qt::AlignHCenter);
+    projectionMatrixLayout->addWidget(projectionMatrix33, 3, 3, Qt::AlignHCenter);
+
+    QGroupBox* modelMatrixGroupBox      = new QGroupBox("MODEL");
+    QGroupBox* viewMatrixGroupBox       = new QGroupBox("VIEW");
+    QGroupBox* projectionMatrixGroupBox = new QGroupBox("PROJECTION");
+
+    modelMatrixGroupBox->setLayout(modelMatrixLayout);
+    viewMatrixGroupBox->setLayout(viewMatrixLayout);
+    projectionMatrixGroupBox->setLayout(projectionMatrixLayout);
+
+    modelMatrixGroupBox->setAlignment(Qt::AlignHCenter);
+    viewMatrixGroupBox->setAlignment(Qt::AlignHCenter);
+    projectionMatrixGroupBox->setAlignment(Qt::AlignHCenter);
+
+    modelMatrixGroupBox->setMinimumWidth(250);
+    modelMatrixGroupBox->setMaximumWidth(250);
+    viewMatrixGroupBox->setMinimumWidth(250);
+    viewMatrixGroupBox->setMaximumWidth(250);
+    projectionMatrixGroupBox->setMinimumWidth(250);
+    projectionMatrixGroupBox->setMaximumWidth(250);
+
+    QLabel* operator1 = new QLabel("x");
+    QLabel* operator2 = new QLabel("x");
+
+    operator1->setMargin(30);
+    operator2->setMargin(30);
+    operator1->setAlignment(Qt::AlignCenter);
+    operator2->setAlignment(Qt::AlignCenter);
+    operator1->setFont(QFont("Arial", 14));
+    operator2->setFont(QFont("Arial", 14));
+
+    QHBoxLayout* matrixLayout = new QHBoxLayout;
+    matrixLayout->addStretch();
+    matrixLayout->addWidget(modelMatrixGroupBox);
+    matrixLayout->addWidget(operator1);
+    matrixLayout->addWidget(viewMatrixGroupBox);
+    matrixLayout->addWidget(operator2);
+    matrixLayout->addWidget(projectionMatrixGroupBox);
+    matrixLayout->addStretch();
+    matrixLayout->addStrut(102);
+
+    m_mvpMatrix->setLayout(matrixLayout);
+
     // ############ SIGNALS/SLOTS ############
 
     ObjectViewer* scene = m_openglArea->getScene();
@@ -487,6 +661,9 @@ void MainWindow::initializeParamsArea()
 
     // Update framerate
     QObject::connect(m_openglArea.data(), SIGNAL(updateFramerate()), this, SLOT(setFramerate()));
+
+    // Update MVP matrix
+    QObject::connect(scene, SIGNAL(renderCycleDone()), this, SLOT(updateMatrix()));
 }
 
 void MainWindow::setViewProperties(bool state)
@@ -547,11 +724,90 @@ void MainWindow::setFramerate()
          count++;
     }
 
-    if(count == 15)
+    if(count == 30)
     {
         fpsCounter->display(average/count);
 
         count   = 0;
         average = 0;
+    }
+}
+
+void MainWindow::updateMatrix()
+{
+    static int count = 0;
+
+    count++;
+
+    if(count == 15) // Mise à jour des matrices toutes les 1/4 de secondes
+    {
+        ObjectViewer* scene = m_openglArea->getScene();
+        Object3D* object3D = scene->getObject();
+
+        const float* modelMatrixData = object3D->modelMatrix().data();
+        const float* viewMatrixData  = scene->getCamera()->viewMatrix().data();
+        const float* projectionMatrixData = scene->getCamera()->projectionMatrix().data();
+
+        modelMatrix00->setNum(modelMatrixData[0]);
+        modelMatrix01->setNum(modelMatrixData[4]);
+        modelMatrix02->setNum(modelMatrixData[8]);
+        modelMatrix03->setNum(modelMatrixData[12]);
+
+        modelMatrix10->setNum(modelMatrixData[1]);
+        modelMatrix11->setNum(modelMatrixData[5]);
+        modelMatrix12->setNum(modelMatrixData[9]);
+        modelMatrix13->setNum(modelMatrixData[13]);
+
+        modelMatrix20->setNum(modelMatrixData[2]);
+        modelMatrix21->setNum(modelMatrixData[6]);
+        modelMatrix22->setNum(modelMatrixData[10]);
+        modelMatrix23->setNum(modelMatrixData[14]);
+
+        modelMatrix30->setNum(modelMatrixData[3]);
+        modelMatrix31->setNum(modelMatrixData[7]);
+        modelMatrix32->setNum(modelMatrixData[11]);
+        modelMatrix33->setNum(modelMatrixData[15]);
+
+        viewMatrix00->setNum(viewMatrixData[0]);
+        viewMatrix01->setNum(viewMatrixData[4]);
+        viewMatrix02->setNum(viewMatrixData[8]);
+        viewMatrix03->setNum(viewMatrixData[12]);
+
+        viewMatrix10->setNum(viewMatrixData[1]);
+        viewMatrix11->setNum(viewMatrixData[5]);
+        viewMatrix12->setNum(viewMatrixData[9]);
+        viewMatrix13->setNum(viewMatrixData[13]);
+
+        viewMatrix20->setNum(viewMatrixData[2]);
+        viewMatrix21->setNum(viewMatrixData[6]);
+        viewMatrix22->setNum(viewMatrixData[10]);
+        viewMatrix23->setNum(viewMatrixData[14]);
+
+        viewMatrix30->setNum(viewMatrixData[3]);
+        viewMatrix31->setNum(viewMatrixData[7]);
+        viewMatrix32->setNum(viewMatrixData[11]);
+        viewMatrix33->setNum(viewMatrixData[15]);
+
+        projectionMatrix00->setNum(projectionMatrixData[0]);
+        projectionMatrix01->setNum(projectionMatrixData[4]);
+        projectionMatrix02->setNum(projectionMatrixData[8]);
+        projectionMatrix03->setNum(projectionMatrixData[12]);
+
+        projectionMatrix10->setNum(projectionMatrixData[1]);
+        projectionMatrix11->setNum(projectionMatrixData[5]);
+        projectionMatrix12->setNum(projectionMatrixData[9]);
+        projectionMatrix13->setNum(projectionMatrixData[13]);
+
+        projectionMatrix20->setNum(projectionMatrixData[2]);
+        projectionMatrix21->setNum(projectionMatrixData[6]);
+        projectionMatrix22->setNum(projectionMatrixData[10]);
+        projectionMatrix23->setNum(projectionMatrixData[14]);
+
+        projectionMatrix30->setNum(projectionMatrixData[3]);
+        projectionMatrix31->setNum(projectionMatrixData[7]);
+        projectionMatrix32->setNum(projectionMatrixData[11]);
+        projectionMatrix33->setNum(projectionMatrixData[15]);
+
+        count = 0;
     }
 }

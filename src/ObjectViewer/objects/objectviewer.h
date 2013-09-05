@@ -46,6 +46,9 @@ public slots:
     void toggleWireframe(bool state);
     void togglePoints(bool state);
 
+signals:
+    void renderCycleDone();
+
 private:
     void prepareShaders();
     void prepareVertexBuffer();

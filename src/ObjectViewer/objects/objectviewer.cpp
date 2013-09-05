@@ -113,6 +113,8 @@ void ObjectViewer::render(double currentTime)
     m_shader->shader()->setUniformValue("mvp", mvp);
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    emit renderCycleDone();
 }
 
 void ObjectViewer::resize(int width, int height)
