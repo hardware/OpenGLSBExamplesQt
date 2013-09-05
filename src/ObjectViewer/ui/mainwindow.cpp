@@ -140,6 +140,22 @@ void MainWindow::initializeParamsArea()
     bottomValue->hide();
     topValue->hide();
 
+    leftValue->setRange(-50.0, 0.0);
+    leftValue->setSingleStep(0.5);
+    leftValue->setValue(-0.5);
+
+    rightValue->setRange(0.0, 50.0);
+    rightValue->setSingleStep(0.5);
+    rightValue->setValue(0.5);
+
+    bottomValue->setRange(-50.0, 0.0);
+    bottomValue->setSingleStep(0.5);
+    bottomValue->setValue(-0.5);
+
+    topValue->setRange(0.0, 50.0);
+    topValue->setSingleStep(0.5);
+    topValue->setValue(0.5);
+
     QGridLayout* viewLayout = new QGridLayout;
     viewLayout->addWidget(fovLabel, 0, 0);
     viewLayout->addWidget(fovValue, 0, 1);
@@ -492,6 +508,10 @@ void MainWindow::initializeParamsArea()
     QObject::connect(fovValue, SIGNAL(valueChanged(double)), this, SLOT(updateFieldOfView(double)));
     QObject::connect(nearPlaneValue, SIGNAL(valueChanged(double)), this, SLOT(updateNearPlane(double)));
     QObject::connect(farPlaneValue, SIGNAL(valueChanged(double)), this, SLOT(updateFarPlane(double)));
+    QObject::connect(leftValue, SIGNAL(valueChanged(double)), this, SLOT(updateLeft(double)));
+    QObject::connect(rightValue, SIGNAL(valueChanged(double)), this, SLOT(updateRight(double)));
+    QObject::connect(bottomValue, SIGNAL(valueChanged(double)), this, SLOT(updateBottom(double)));
+    QObject::connect(topValue, SIGNAL(valueChanged(double)), this, SLOT(updateTop(double)));
 
     // Camera
     QObject::connect(resetCamera, SIGNAL(clicked()), camera, SLOT(resetCamera()));
@@ -514,8 +534,14 @@ void MainWindow::initializeParamsArea()
 
 void MainWindow::setViewProperties(bool state)
 {
+    ObjectViewer* scene = m_openglArea->getScene();
+    Camera* camera = scene->getCamera();
+
     if(state)
     {
+        camera->setProjectionType(Camera::PerspectiveProjection);
+        scene->resize(m_openglArea->width(), m_openglArea->height());
+
         fovLabel->show();
         fovValue->show();
 
@@ -531,6 +557,9 @@ void MainWindow::setViewProperties(bool state)
     }
     else
     {
+        camera->setProjectionType(Camera::OrthogonalProjection);
+        scene->resize(m_openglArea->width(), m_openglArea->height());
+
         fovLabel->hide();
         fovValue->hide();
 
@@ -680,4 +709,36 @@ void MainWindow::updateFarPlane(double farPlane)
     Camera* camera = scene->getCamera();
 
     camera->setFarPlane(farPlane);
+}
+
+void MainWindow::updateLeft(double left)
+{
+    ObjectViewer* scene = m_openglArea->getScene();
+    Camera* camera = scene->getCamera();
+
+    camera->setLeft(left);
+}
+
+void MainWindow::updateRight(double right)
+{
+    ObjectViewer* scene = m_openglArea->getScene();
+    Camera* camera = scene->getCamera();
+
+    camera->setRight(right);
+}
+
+void MainWindow::updateBottom(double bottom)
+{
+    ObjectViewer* scene = m_openglArea->getScene();
+    Camera* camera = scene->getCamera();
+
+    camera->setBottom(bottom);
+}
+
+void MainWindow::updateTop(double top)
+{
+    ObjectViewer* scene = m_openglArea->getScene();
+    Camera* camera = scene->getCamera();
+
+    camera->setTop(top);
 }

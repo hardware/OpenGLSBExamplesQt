@@ -70,6 +70,8 @@ public:
     void setPerspectiveProjection(float fieldOfView, float aspect,
                                   float nearPlane,   float farPlane);
 
+    void setProjectionType(ProjectionType type);
+
     void setNearPlane(const float& nearPlane);
     void setFarPlane(const float& nearPlane);
     void setFieldOfView(const float& fieldOfView);

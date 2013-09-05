@@ -98,6 +98,13 @@ void Camera::setPerspectiveProjection(float fieldOfView, float aspectRatio,
     d->updatePerspectiveProjection();
 }
 
+void Camera::setProjectionType(ProjectionType type)
+{
+    Q_D(Camera);
+
+    d->m_projectionType = type;
+}
+
 void Camera::setNearPlane(const float& nearPlane)
 {
     Q_D(Camera);

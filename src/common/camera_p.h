@@ -14,7 +14,7 @@ public:
           m_upVector(0.0f, 1.0f, 0.0f),
           m_viewCenter(0.0f, 0.0f, 0.0f),
           m_cameraToCenter(0.0f, 0.0f, -1.0f),
-          m_projectionType(Camera::OrthogonalProjection),
+          m_projectionType(Camera::PerspectiveProjection),
           m_nearPlane(0.1f),
           m_farPlane(1024.0f),
           m_fieldOfView(75.0f),

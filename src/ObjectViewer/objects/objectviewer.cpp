@@ -121,9 +121,24 @@ void ObjectViewer::resize(int width, int height)
 {
     glViewport(0, 0, width, height);
 
-    float aspect = static_cast<float>(width) / static_cast<float>(height);
+    if(m_camera->projectionType() == Camera::PerspectiveProjection)
+    {
+        float aspect = static_cast<float>(width) / static_cast<float>(height);
 
-    m_camera->setPerspectiveProjection(m_camera->fieldOfView(), aspect, m_camera->nearPlane(), m_camera->farPlane());
+        m_camera->setPerspectiveProjection(m_camera->fieldOfView(),
+                                           aspect,
+                                           m_camera->nearPlane(),
+                                           m_camera->farPlane());
+    }
+    else if(m_camera->projectionType() == Camera::OrthogonalProjection)
+    {
+        m_camera->setOrthographicProjection(m_camera->left(),
+                                            m_camera->right(),
+                                            m_camera->bottom(),
+                                            m_camera->top(),
+                                            m_camera->nearPlane(),
+                                            m_camera->farPlane());
+    }
 }
 
 void ObjectViewer::prepareShaders()

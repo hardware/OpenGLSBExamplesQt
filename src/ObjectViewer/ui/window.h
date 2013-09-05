@@ -46,9 +46,9 @@ signals:
     void updateFramerate();
 
 private:
-    QElapsedTimer     m_renderTimer, m_updateTimer;
-    QOpenGLContext *  m_context;
-    AbstractScene  *  m_scene;
+    QElapsedTimer    m_renderTimer, m_updateTimer;
+    QOpenGLContext * m_context;
+    AbstractScene  * m_scene;
 
     QPoint m_prevPos;
     QPoint m_pos;

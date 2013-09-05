@@ -31,6 +31,10 @@ private slots:
     void updateFieldOfView(double fov);
     void updateNearPlane(double nearPlane);
     void updateFarPlane(double farPlane);
+    void updateLeft(double left);
+    void updateRight(double right);
+    void updateBottom(double bottom);
+    void updateTop(double top);
 
 private:
     QWidget      * m_params,         * m_coordinate,     * m_mvpMatrix;
