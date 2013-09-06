@@ -39,6 +39,10 @@ public:
     Object3D* getObject();
     Camera*   getCamera();
 
+private:
+    void prepareShaders();
+    void prepareVertexBuffer();
+
 public slots:
     void onMessageLogged(QOpenGLDebugMessage message);
 
@@ -50,9 +54,6 @@ signals:
     void renderCycleDone();
 
 private:
-    void prepareShaders();
-    void prepareVertexBuffer();
-
     Camera                    * m_camera;
     QOpenGLVertexArrayObject  * m_vao;
     QOpenGLFunctions_3_2_Core * m_funcs;
@@ -63,8 +64,7 @@ private:
 
     ShadersPtr m_shader;
     Object3D   m_spinningCube;
-
-    QVector3D m_v;
+    QVector3D  m_v;
 
     bool m_viewCenterFixed;
 

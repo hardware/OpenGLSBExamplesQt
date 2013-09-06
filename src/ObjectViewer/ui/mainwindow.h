@@ -21,6 +21,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private:
     void initializeMenuBar();
     void initializeParamsArea();
 
