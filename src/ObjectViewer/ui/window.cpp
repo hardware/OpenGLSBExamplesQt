@@ -17,7 +17,9 @@
 Window::Window(QScreen *screen)
     : QWindow(screen),
       m_scene(new ObjectViewer(this)),
-      m_leftButtonPressed(false)
+      m_leftButtonPressed(false),
+      m_cameraSpeed(44.7),
+      m_cameraSensitivity(0.2)
 {
     // On définit le type de la zone de rendu, dans notre cas il
     // s'agit d'une zone OpenGL
@@ -124,8 +126,6 @@ ObjectViewer* Window::getScene()
 
 void Window::keyPressEvent(QKeyEvent* e)
 {
-    const float speed = 44.7f; // in m/s. Equivalent to 100 miles/hour
-
     ObjectViewer* scene = static_cast<ObjectViewer*>(m_scene);
 
     switch (e->key())
@@ -136,27 +136,27 @@ void Window::keyPressEvent(QKeyEvent* e)
         break;
 
     case Qt::Key_Right:
-        scene->setSideSpeed(speed);
+        scene->setSideSpeed(m_cameraSpeed);
         break;
 
     case Qt::Key_Left:
-        scene->setSideSpeed(-speed);
+        scene->setSideSpeed(-m_cameraSpeed);
         break;
 
     case Qt::Key_Up:
-        scene->setForwardSpeed(speed);
+        scene->setForwardSpeed(m_cameraSpeed);
         break;
 
     case Qt::Key_Down:
-        scene->setForwardSpeed(-speed);
+        scene->setForwardSpeed(-m_cameraSpeed);
         break;
 
     case Qt::Key_PageUp:
-        scene->setVerticalSpeed(speed);
+        scene->setVerticalSpeed(m_cameraSpeed);
         break;
 
     case Qt::Key_PageDown:
-        scene->setVerticalSpeed(-speed);
+        scene->setVerticalSpeed(-m_cameraSpeed);
         break;
 
     case Qt::Key_Shift:
@@ -225,8 +225,8 @@ void Window::mouseMoveEvent(QMouseEvent* e)
     {
         m_pos = e->pos();
 
-        float dx = 0.2f * (m_pos.x() - m_prevPos.x());
-        float dy = -0.2f * (m_pos.y() - m_prevPos.y());
+        float dx = m_cameraSensitivity * (m_pos.x() - m_prevPos.x());
+        float dy = -m_cameraSensitivity * (m_pos.y() - m_prevPos.y());
 
         m_prevPos = m_pos;
 
@@ -237,5 +237,15 @@ void Window::mouseMoveEvent(QMouseEvent* e)
     }
 
     QWindow::mouseMoveEvent(e);
+}
+
+void Window::setCameraSpeed(double speed)
+{
+    m_cameraSpeed = speed;
+}
+
+void Window::setCameraSensitivity(double sensitivity)
+{
+    m_cameraSensitivity = sensitivity;
 }
 

@@ -36,6 +36,8 @@ private:
 
 public slots:
     void checkAnimate(int state);
+    void setCameraSpeed(double speed);
+    void setCameraSensitivity(double sensitivity);
 
 protected slots:
     void resizeGL();
@@ -54,6 +56,9 @@ private:
     QPoint m_pos;
 
     bool m_leftButtonPressed;
+
+    double m_cameraSpeed;
+    double m_cameraSensitivity;
 };
 
 #endif // WINDOW_H

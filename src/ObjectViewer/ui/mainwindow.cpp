@@ -202,7 +202,11 @@ void MainWindow::initializeParamsArea()
     QDoubleSpinBox* cameraSpeedValue       = new QDoubleSpinBox;
     QDoubleSpinBox* cameraSensitivityValue = new QDoubleSpinBox;
 
+    cameraSpeedValue->setValue(44.7);
     cameraSpeedValue->setMaximumSize(50, 20);
+
+    cameraSensitivityValue->setValue(0.2);
+    cameraSensitivityValue->setSingleStep(0.05);
     cameraSensitivityValue->setMaximumSize(50, 20);
 
     QHBoxLayout* cameraSpeedLayout = new QHBoxLayout;
@@ -514,6 +518,8 @@ void MainWindow::initializeParamsArea()
     QObject::connect(topValue, SIGNAL(valueChanged(double)), this, SLOT(updateTop(double)));
 
     // Camera
+    QObject::connect(cameraSpeedValue, SIGNAL(valueChanged(double)), m_openglArea.data(), SLOT(setCameraSpeed(double)));
+    QObject::connect(cameraSensitivityValue, SIGNAL(valueChanged(double)), m_openglArea.data(), SLOT(setCameraSensitivity(double)));
     QObject::connect(resetCamera, SIGNAL(clicked()), camera, SLOT(resetCamera()));
 
     // Object
