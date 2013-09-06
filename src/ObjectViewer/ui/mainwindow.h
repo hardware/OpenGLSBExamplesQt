@@ -11,6 +11,7 @@ class Object3D;
 class QLabel;
 class QDoubleSpinBox;
 class QLCDNumber;
+class Camera;
 
 class MainWindow : public QMainWindow
 {
@@ -41,6 +42,7 @@ private:
     QDockWidget  * m_dockParamsArea, * m_dockMatrixArea;
     ObjectViewer * m_scene;
     Object3D     * m_object3D;
+    Camera       * m_camera;
 
     QScopedPointer<Window> m_openglArea;
 

@@ -8,10 +8,17 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      m_openglArea(new Window)
+      m_openglArea(new Window),
+      m_scene(0),
+      m_object3D(0),
+      m_camera(0)
 {
     resize(1366, 768);
     setCentralWidget(QWidget::createWindowContainer(m_openglArea.data()));
+
+    m_scene    = m_openglArea->getScene();
+    m_object3D = m_scene->getObject();
+    m_camera   = m_scene->getCamera();
 
     initializeMenuBar();
     initializeParamsArea();
@@ -494,16 +501,12 @@ void MainWindow::initializeParamsArea()
 
     // ############ SIGNALS/SLOTS ############
 
-    ObjectViewer* scene = m_openglArea->getScene();
-    Object3D* object3D = scene->getObject();
-    Camera* camera = scene->getCamera();
-
     QObject::connect(animate, SIGNAL(stateChanged(int)), m_openglArea.data(), SLOT(checkAnimate(int)));
 
     // Rendering mode
-    QObject::connect(fill,      SIGNAL(toggled(bool)), scene, SLOT(toggleFill(bool)));
-    QObject::connect(wireframe, SIGNAL(toggled(bool)), scene, SLOT(toggleWireframe(bool)));
-    QObject::connect(points,    SIGNAL(toggled(bool)), scene, SLOT(togglePoints(bool)));
+    QObject::connect(fill,      SIGNAL(toggled(bool)), m_scene, SLOT(toggleFill(bool)));
+    QObject::connect(wireframe, SIGNAL(toggled(bool)), m_scene, SLOT(toggleWireframe(bool)));
+    QObject::connect(points,    SIGNAL(toggled(bool)), m_scene, SLOT(togglePoints(bool)));
 
     // Projection type
     QObject::connect(perspective, SIGNAL(toggled(bool)), this, SLOT(setViewProperties(bool)));
@@ -520,33 +523,30 @@ void MainWindow::initializeParamsArea()
     // Camera
     QObject::connect(cameraSpeedValue, SIGNAL(valueChanged(double)), m_openglArea.data(), SLOT(setCameraSpeed(double)));
     QObject::connect(cameraSensitivityValue, SIGNAL(valueChanged(double)), m_openglArea.data(), SLOT(setCameraSensitivity(double)));
-    QObject::connect(resetCamera, SIGNAL(clicked()), camera, SLOT(resetCamera()));
+    QObject::connect(resetCamera, SIGNAL(clicked()), m_camera, SLOT(resetCamera()));
 
     // Object
-    QObject::connect(translationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXPosition(int)));
-    QObject::connect(translationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYPosition(int)));
-    QObject::connect(translationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZPosition(int)));
+    QObject::connect(translationX, SIGNAL(valueChanged(int)), m_object3D, SLOT(setObjectXPosition(int)));
+    QObject::connect(translationY, SIGNAL(valueChanged(int)), m_object3D, SLOT(setObjectYPosition(int)));
+    QObject::connect(translationZ, SIGNAL(valueChanged(int)), m_object3D, SLOT(setObjectZPosition(int)));
 
-    QObject::connect(rotationX, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectXRotation(int)));
-    QObject::connect(rotationY, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectYRotation(int)));
-    QObject::connect(rotationZ, SIGNAL(valueChanged(int)), object3D, SLOT(setObjectZRotation(int)));
+    QObject::connect(rotationX, SIGNAL(valueChanged(int)), m_object3D, SLOT(setObjectXRotation(int)));
+    QObject::connect(rotationY, SIGNAL(valueChanged(int)), m_object3D, SLOT(setObjectYRotation(int)));
+    QObject::connect(rotationZ, SIGNAL(valueChanged(int)), m_object3D, SLOT(setObjectZRotation(int)));
 
     // Update framerate
     QObject::connect(m_openglArea.data(), SIGNAL(updateFramerate()), this, SLOT(setFramerate()));
 
     // Update MVP matrix
-    QObject::connect(scene, SIGNAL(renderCycleDone()), this, SLOT(updateMatrix()));
+    QObject::connect(m_scene, SIGNAL(renderCycleDone()), this, SLOT(updateMatrix()));
 }
 
 void MainWindow::setViewProperties(bool state)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
     if(state)
     {
-        camera->setProjectionType(Camera::PerspectiveProjection);
-        scene->resize(m_openglArea->width(), m_openglArea->height());
+        m_camera->setProjectionType(Camera::PerspectiveProjection);
+        m_scene->resize(m_openglArea->width(), m_openglArea->height());
 
         fovLabel->show();
         fovValue->show();
@@ -563,8 +563,8 @@ void MainWindow::setViewProperties(bool state)
     }
     else
     {
-        camera->setProjectionType(Camera::OrthogonalProjection);
-        scene->resize(m_openglArea->width(), m_openglArea->height());
+        m_camera->setProjectionType(Camera::OrthogonalProjection);
+        m_scene->resize(m_openglArea->width(), m_openglArea->height());
 
         fovLabel->hide();
         fovValue->hide();
@@ -622,12 +622,9 @@ void MainWindow::updateMatrix()
 
     if(count == 15) // Mise à jour des matrices toutes les 1/4 de secondes
     {
-        ObjectViewer* scene = m_openglArea->getScene();
-        Object3D* object3D = scene->getObject();
-
-        const float* modelMatrixData = object3D->modelMatrix().data();
-        const float* viewMatrixData  = scene->getCamera()->viewMatrix().data();
-        const float* projectionMatrixData = scene->getCamera()->projectionMatrix().data();
+        const float* modelMatrixData = m_object3D->modelMatrix().data();
+        const float* viewMatrixData  = m_scene->getCamera()->viewMatrix().data();
+        const float* projectionMatrixData = m_scene->getCamera()->projectionMatrix().data();
 
         modelMatrix00->setNum(modelMatrixData[0]);
         modelMatrix01->setNum(modelMatrixData[4]);
@@ -695,56 +692,35 @@ void MainWindow::updateMatrix()
 
 void MainWindow::updateFieldOfView(double fov)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setFieldOfView(fov);
+    m_camera->setFieldOfView(fov);
 }
 
 void MainWindow::updateNearPlane(double nearPlane)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setNearPlane(nearPlane);
+    m_camera->setNearPlane(nearPlane);
 }
 
 void MainWindow::updateFarPlane(double farPlane)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setFarPlane(farPlane);
+    m_camera->setFarPlane(farPlane);
 }
 
 void MainWindow::updateLeft(double left)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setLeft(left);
+    m_camera->setLeft(left);
 }
 
 void MainWindow::updateRight(double right)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setRight(right);
+    m_camera->setRight(right);
 }
 
 void MainWindow::updateBottom(double bottom)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setBottom(bottom);
+    m_camera->setBottom(bottom);
 }
 
 void MainWindow::updateTop(double top)
 {
-    ObjectViewer* scene = m_openglArea->getScene();
-    Camera* camera = scene->getCamera();
-
-    camera->setTop(top);
+    m_camera->setTop(top);
 }
