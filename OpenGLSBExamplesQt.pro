@@ -10,8 +10,7 @@ include( src/common/common.pri );
 # include( src/TriangleDerivingFadeEffect/TriangleDerivingFadeEffect.pri )
 # include( src/SimpleTriangleVBO/SimpleTriangleVBO.pri )
 # include( src/SimpleTriangleMultipleVBO/SimpleTriangleMultipleVBO.pri )
-# include( src/SpinningCubeDUB/SpinningCubeDUB.pri )
-include( src/ObjectViewer/ObjectViewer.pri )
+include( src/SpinningCubeDUB/SpinningCubeDUB.pri )
 
 QT += core gui widgets
 
